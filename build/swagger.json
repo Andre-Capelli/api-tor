@@ -35,6 +35,15 @@
 					"email": {
 						"type": "string"
 					},
+					"password": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
 					"id": {
 						"type": "string"
 					}
@@ -42,13 +51,1109 @@
 				"required": [
 					"name",
 					"email",
+					"password",
 					"id"
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdBy": {
+						"type": "string"
+					},
+					"createdByName": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedBy": {
+						"type": "string"
+					},
+					"updatedByName": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					},
+					"isActive": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthResponse": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					},
+					"user": {
+						"properties": {
+							"role": {
+								"type": "string"
+							},
+							"email": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"role",
+							"email",
+							"name",
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"accessToken",
+					"refreshToken",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LoginRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RegisterRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RefreshTokenRequest": {
+				"properties": {
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"refreshToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TestResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"user": {
+						"properties": {
+							"role": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							},
+							"email": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"name",
+							"email",
+							"id"
+						],
+						"type": "object"
+					},
+					"timestamp": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success",
+					"message",
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Disk": {
+				"properties": {
+					"index": {
+						"type": "number",
+						"format": "double"
+					},
+					"model": {
+						"type": "string"
+					},
+					"serialNumber": {
+						"type": "string"
+					},
+					"firmwareRevision": {
+						"type": "string"
+					},
+					"sizeBytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"temperature": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					},
+					"lastErrorCode": {
+						"type": "string",
+						"nullable": true
+					},
+					"errorCleared": {
+						"type": "string",
+						"nullable": true
+					},
+					"errorDescription": {
+						"type": "string",
+						"nullable": true
+					},
+					"errorMethodology": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"index",
+					"model",
+					"serialNumber",
+					"firmwareRevision",
+					"sizeBytes",
+					"temperature",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Partition": {
+				"properties": {
+					"diskIndex": {
+						"type": "number",
+						"format": "double"
+					},
+					"index": {
+						"type": "number",
+						"format": "double"
+					},
+					"bootable": {
+						"type": "boolean"
+					},
+					"primaryPartition": {
+						"type": "boolean"
+					},
+					"volumeName": {
+						"type": "string"
+					},
+					"sizeBytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"freeSpaceBytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"usagePercentage": {
+						"type": "number",
+						"format": "double"
+					},
+					"volumeLetter": {
+						"type": "string",
+						"nullable": true
+					},
+					"fileSystem": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"diskIndex",
+					"index",
+					"bootable",
+					"primaryPartition",
+					"volumeName",
+					"sizeBytes",
+					"freeSpaceBytes",
+					"usagePercentage"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStorageInformation": {
+				"properties": {
+					"machineId": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"disks": {
+						"items": {
+							"$ref": "#/components/schemas/Disk"
+						},
+						"type": "array"
+					},
+					"partitions": {
+						"items": {
+							"$ref": "#/components/schemas/Partition"
+						},
+						"type": "array"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"machineId",
+					"timestamp",
+					"disks",
+					"partitions",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_StorageInformation.Exclude_keyofStorageInformation.machineId__": {
+				"properties": {
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"disks": {
+						"items": {
+							"$ref": "#/components/schemas/Disk"
+						},
+						"type": "array"
+					},
+					"partitions": {
+						"items": {
+							"$ref": "#/components/schemas/Partition"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"timestamp",
+					"disks",
+					"partitions"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_StorageInformation.machineId_": {
+				"$ref": "#/components/schemas/Pick_StorageInformation.Exclude_keyofStorageInformation.machineId__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"INetworkInformation": {
+				"properties": {
+					"machineId": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"bytesSent": {
+						"type": "number",
+						"format": "double"
+					},
+					"bytesReceived": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"speed": {
+						"type": "string"
+					},
+					"ipAddress": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"machineId",
+					"timestamp",
+					"name",
+					"bytesSent",
+					"bytesReceived",
+					"type",
+					"status",
+					"speed",
+					"ipAddress",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_NetworkInformation.Exclude_keyofNetworkInformation.machineId__": {
+				"properties": {
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"bytesSent": {
+						"type": "number",
+						"format": "double"
+					},
+					"bytesReceived": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"speed": {
+						"type": "string"
+					},
+					"ipAddress": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"timestamp",
+					"name",
+					"bytesSent",
+					"bytesReceived",
+					"type",
+					"status",
+					"speed",
+					"ipAddress"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_NetworkInformation.machineId_": {
+				"$ref": "#/components/schemas/Pick_NetworkInformation.Exclude_keyofNetworkInformation.machineId__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"IMemoryInformation": {
+				"properties": {
+					"machineId": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"usedMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"availableMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"usagePercentage": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"machineId",
+					"timestamp",
+					"usedMemoryGB",
+					"availableMemoryGB",
+					"totalMemoryGB",
+					"usagePercentage",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_MemoryInformation.Exclude_keyofMemoryInformation.machineId__": {
+				"properties": {
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"usedMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"availableMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"usagePercentage": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"timestamp",
+					"usedMemoryGB",
+					"availableMemoryGB",
+					"totalMemoryGB",
+					"usagePercentage"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_MemoryInformation.machineId_": {
+				"$ref": "#/components/schemas/Pick_MemoryInformation.Exclude_keyofMemoryInformation.machineId__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"IMachine": {
+				"properties": {
+					"machineId": {
+						"type": "string"
+					},
+					"computerName": {
+						"type": "string"
+					},
+					"operatingSystem": {
+						"type": "string"
+					},
+					"operatingSystemVersion": {
+						"type": "string"
+					},
+					"operatingSystemArchitecture": {
+						"type": "string"
+					},
+					"operatingSystemDescription": {
+						"type": "string"
+					},
+					"domainName": {
+						"type": "string"
+					},
+					"workgroup": {
+						"type": "string"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"lastSeen": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"owner": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"machineId",
+					"computerName",
+					"operatingSystem",
+					"operatingSystemVersion",
+					"operatingSystemArchitecture",
+					"operatingSystemDescription",
+					"isActive",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Machine": {
+				"properties": {
+					"machineId": {
+						"type": "string"
+					},
+					"computerName": {
+						"type": "string"
+					},
+					"operatingSystem": {
+						"type": "string"
+					},
+					"operatingSystemVersion": {
+						"type": "string"
+					},
+					"operatingSystemArchitecture": {
+						"type": "string"
+					},
+					"operatingSystemDescription": {
+						"type": "string"
+					},
+					"domainName": {
+						"type": "string"
+					},
+					"workgroup": {
+						"type": "string"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"lastSeen": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"owner": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"machineId",
+					"computerName",
+					"operatingSystem",
+					"operatingSystemVersion",
+					"operatingSystemArchitecture",
+					"operatingSystemDescription",
+					"isActive"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CpuCore": {
+				"properties": {
+					"coreId": {
+						"type": "number",
+						"format": "double"
+					},
+					"temperature": {
+						"type": "number",
+						"format": "double"
+					},
+					"load": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"coreId",
+					"temperature",
+					"load"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_CpuInformation.Exclude_keyofCpuInformation.machineId-or-timestamp__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"temperature": {
+						"type": "number",
+						"format": "double"
+					},
+					"load": {
+						"type": "number",
+						"format": "double"
+					},
+					"power": {
+						"type": "number",
+						"format": "double"
+					},
+					"cores": {
+						"items": {
+							"$ref": "#/components/schemas/CpuCore"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"temperature",
+					"load",
+					"power",
+					"cores"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_CpuInformation.machineId-or-timestamp_": {
+				"$ref": "#/components/schemas/Pick_CpuInformation.Exclude_keyofCpuInformation.machineId-or-timestamp__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"Pick_MemoryInformation.Exclude_keyofMemoryInformation.machineId-or-timestamp__": {
+				"properties": {
+					"usedMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"availableMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalMemoryGB": {
+						"type": "number",
+						"format": "double"
+					},
+					"usagePercentage": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"usedMemoryGB",
+					"availableMemoryGB",
+					"totalMemoryGB",
+					"usagePercentage"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_MemoryInformation.machineId-or-timestamp_": {
+				"$ref": "#/components/schemas/Pick_MemoryInformation.Exclude_keyofMemoryInformation.machineId-or-timestamp__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"Pick_StorageInformation.Exclude_keyofStorageInformation.machineId-or-timestamp__": {
+				"properties": {
+					"disks": {
+						"items": {
+							"$ref": "#/components/schemas/Disk"
+						},
+						"type": "array"
+					},
+					"partitions": {
+						"items": {
+							"$ref": "#/components/schemas/Partition"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"disks",
+					"partitions"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_StorageInformation.machineId-or-timestamp_": {
+				"$ref": "#/components/schemas/Pick_StorageInformation.Exclude_keyofStorageInformation.machineId-or-timestamp__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"Pick_AntivirusInformation.Exclude_keyofAntivirusInformation.machineId-or-timestamp__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"lastQuickScan": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"lastFullScan": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"hasThreats": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name",
+					"enabled"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_AntivirusInformation.machineId-or-timestamp_": {
+				"$ref": "#/components/schemas/Pick_AntivirusInformation.Exclude_keyofAntivirusInformation.machineId-or-timestamp__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"Pick_NetworkInformation.Exclude_keyofNetworkInformation.machineId-or-timestamp__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"bytesSent": {
+						"type": "number",
+						"format": "double"
+					},
+					"bytesReceived": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"speed": {
+						"type": "string"
+					},
+					"ipAddress": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"bytesSent",
+					"bytesReceived",
+					"type",
+					"status",
+					"speed",
+					"ipAddress"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_NetworkInformation.machineId-or-timestamp_": {
+				"$ref": "#/components/schemas/Pick_NetworkInformation.Exclude_keyofNetworkInformation.machineId-or-timestamp__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"FullMachineData": {
+				"properties": {
+					"timestamp": {
+						"type": "string"
+					},
+					"cpuInformation": {
+						"items": {
+							"$ref": "#/components/schemas/Omit_CpuInformation.machineId-or-timestamp_"
+						},
+						"type": "array"
+					},
+					"memoryInformation": {
+						"$ref": "#/components/schemas/Omit_MemoryInformation.machineId-or-timestamp_"
+					},
+					"storageInformation": {
+						"$ref": "#/components/schemas/Omit_StorageInformation.machineId-or-timestamp_"
+					},
+					"antivirusInformation": {
+						"items": {
+							"$ref": "#/components/schemas/Omit_AntivirusInformation.machineId-or-timestamp_"
+						},
+						"type": "array"
+					},
+					"networkInformation": {
+						"items": {
+							"$ref": "#/components/schemas/Omit_NetworkInformation.machineId-or-timestamp_"
+						},
+						"type": "array"
+					},
+					"operatingSystem": {
+						"type": "string"
+					},
+					"operatingSystemVersion": {
+						"type": "string"
+					},
+					"operatingSystemArchitecture": {
+						"type": "string"
+					},
+					"operatingSystemDescription": {
+						"type": "string"
+					},
+					"computerName": {
+						"type": "string"
+					},
+					"domainName": {
+						"type": "string"
+					},
+					"workgroup": {
+						"type": "string"
+					},
+					"updatesPending": {
+						"type": "boolean"
+					},
+					"uptimeSeconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"loggedInUser": {
+						"type": "string"
+					},
+					"machineId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"timestamp",
+					"cpuInformation",
+					"memoryInformation",
+					"storageInformation",
+					"antivirusInformation",
+					"networkInformation",
+					"operatingSystem",
+					"operatingSystemVersion",
+					"operatingSystemArchitecture",
+					"operatingSystemDescription",
+					"computerName",
+					"updatesPending",
+					"uptimeSeconds",
+					"loggedInUser",
+					"machineId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICpuInformation": {
+				"properties": {
+					"machineId": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"temperature": {
+						"type": "number",
+						"format": "double"
+					},
+					"load": {
+						"type": "number",
+						"format": "double"
+					},
+					"power": {
+						"type": "number",
+						"format": "double"
+					},
+					"cores": {
+						"items": {
+							"$ref": "#/components/schemas/CpuCore"
+						},
+						"type": "array"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"machineId",
+					"timestamp",
+					"name",
+					"temperature",
+					"load",
+					"power",
+					"cores",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_CpuInformation.Exclude_keyofCpuInformation.machineId__": {
+				"properties": {
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"temperature": {
+						"type": "number",
+						"format": "double"
+					},
+					"load": {
+						"type": "number",
+						"format": "double"
+					},
+					"power": {
+						"type": "number",
+						"format": "double"
+					},
+					"cores": {
+						"items": {
+							"$ref": "#/components/schemas/CpuCore"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"timestamp",
+					"name",
+					"temperature",
+					"load",
+					"power",
+					"cores"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_CpuInformation.machineId_": {
+				"$ref": "#/components/schemas/Pick_CpuInformation.Exclude_keyofCpuInformation.machineId__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"IAntivirusInformation": {
+				"properties": {
+					"machineId": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"lastQuickScan": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"lastFullScan": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"hasThreats": {
+						"type": "boolean",
+						"nullable": true
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"machineId",
+					"timestamp",
+					"name",
+					"enabled",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_AntivirusInformation.Exclude_keyofAntivirusInformation.machineId__": {
+				"properties": {
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"lastQuickScan": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"lastFullScan": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"hasThreats": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"timestamp",
+					"name",
+					"enabled"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_AntivirusInformation.machineId_": {
+				"$ref": "#/components/schemas/Pick_AntivirusInformation.Exclude_keyofAntivirusInformation.machineId__",
+				"description": "Construct a type with the properties of T except for those in type K."
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT",
+				"description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+			}
+		}
 	},
 	"info": {
 		"title": "api-tor",
@@ -75,6 +1180,9 @@
 								}
 							}
 						}
+					},
+					"500": {
+						"description": "Internal Server Error"
 					}
 				},
 				"tags": [
@@ -87,7 +1195,28 @@
 				"operationId": "CreateUser",
 				"responses": {
 					"201": {
-						"description": "Created"
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"500": {
+						"description": "Internal Server Error"
 					}
 				},
 				"tags": [
@@ -100,7 +1229,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IUser"
+								"$ref": "#/components/schemas/User"
 							}
 						}
 					}
@@ -125,6 +1254,12 @@
 								}
 							}
 						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
 					}
 				},
 				"tags": [
@@ -147,6 +1282,12 @@
 				"responses": {
 					"200": {
 						"description": "Updated"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"500": {
+						"description": "Internal Server Error"
 					}
 				},
 				"tags": [
@@ -179,10 +1320,2092 @@
 				"responses": {
 					"200": {
 						"description": "Deleted"
+					},
+					"500": {
+						"description": "Internal Server Error"
 					}
 				},
 				"tags": [
 					"User"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Login successful",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid credentials"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "User login - Generate JWT tokens",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"201": {
+						"description": "User registered successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "User registration - Create new user and generate tokens",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/refresh": {
+			"post": {
+				"operationId": "RefreshToken",
+				"responses": {
+					"200": {
+						"description": "Token refreshed successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"refreshToken": {
+											"type": "string"
+										},
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"refreshToken",
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid or expired refresh token"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Refresh access token using refresh token",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RefreshTokenRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/test/public": {
+			"get": {
+				"operationId": "PublicEndpoint",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TestResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Public endpoint - No authentication required\r\nUse this to test if the API is working",
+				"tags": [
+					"Test Endpoints"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/test/protected": {
+			"get": {
+				"operationId": "ProtectedEndpoint",
+				"responses": {
+					"200": {
+						"description": "Authenticated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TestResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Invalid or missing token"
+					}
+				},
+				"description": "Protected endpoint - Requires valid JWT token\r\nSend token in Authorization header: \"Bearer <your-token>\"",
+				"tags": [
+					"Test Endpoints"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/test/admin": {
+			"get": {
+				"operationId": "AdminEndpoint",
+				"responses": {
+					"200": {
+						"description": "Admin access granted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TestResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Invalid or missing token"
+					},
+					"403": {
+						"description": "Forbidden - Insufficient permissions"
+					}
+				},
+				"description": "Admin only endpoint - Requires valid JWT token with admin role\r\nSend token in Authorization header: \"Bearer <your-token>\"\r\nUser must have role: \"admin\"",
+				"tags": [
+					"Test Endpoints"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/test/moderator": {
+			"get": {
+				"operationId": "ModeratorEndpoint",
+				"responses": {
+					"200": {
+						"description": "Moderator access granted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TestResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Invalid or missing token"
+					},
+					"403": {
+						"description": "Forbidden - Insufficient permissions"
+					}
+				},
+				"description": "Moderator or Admin endpoint - Requires valid JWT token with moderator or admin role\r\nSend token in Authorization header: \"Bearer <your-token>\"\r\nUser must have role: \"moderator\" or \"admin\"",
+				"tags": [
+					"Test Endpoints"
+				],
+				"security": [
+					{
+						"jwt": [
+							"moderator",
+							"admin"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/test/validate-token": {
+			"get": {
+				"operationId": "ValidateToken",
+				"responses": {
+					"200": {
+						"description": "Token is valid",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"tokenInfo": {
+											"properties": {
+												"audience": {
+													"type": "string"
+												},
+												"issuer": {
+													"type": "string"
+												},
+												"expiresAt": {
+													"type": "number",
+													"format": "double"
+												},
+												"issuedAt": {
+													"type": "number",
+													"format": "double"
+												},
+												"role": {
+													"type": "string"
+												},
+												"name": {
+													"type": "string"
+												},
+												"email": {
+													"type": "string"
+												},
+												"userId": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"name",
+												"email",
+												"userId"
+											],
+											"type": "object"
+										},
+										"message": {
+											"type": "string"
+										},
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"tokenInfo",
+										"message",
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Invalid or expired token"
+					}
+				},
+				"description": "Validate token endpoint - Returns token information if valid\r\nSend token in Authorization header: \"Bearer <your-token>\"",
+				"tags": [
+					"Test Endpoints"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/storage-information/machine/{machineId}": {
+			"get": {
+				"operationId": "GetStorageInformationByMachineId",
+				"responses": {
+					"200": {
+						"description": "List",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IStorageInformation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateStorageInformation",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_StorageInformation.machineId_"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteStorageInformationByMachineId",
+				"responses": {
+					"200": {
+						"description": "Deleted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"deletedCount": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"deletedCount"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/storage-information/{id}": {
+			"get": {
+				"operationId": "GetStorageInformation",
+				"responses": {
+					"200": {
+						"description": "Storage Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IStorageInformation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteStorageInformation",
+				"responses": {
+					"200": {
+						"description": "Deleted"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/storage-information/machine/{machineId}/latest": {
+			"get": {
+				"operationId": "GetLatestStorageInformation",
+				"responses": {
+					"200": {
+						"description": "Latest Storage Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IStorageInformation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/storage-information/machine/{machineId}/batch": {
+			"post": {
+				"operationId": "CreateStorageInformationBatch",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"count": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"count"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/Omit_StorageInformation.machineId_"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/storage-information/machine/{machineId}/range": {
+			"get": {
+				"operationId": "GetStorageInformationByDateRange",
+				"responses": {
+					"200": {
+						"description": "Storage Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IStorageInformation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Storage Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/network-information/machine/{machineId}": {
+			"get": {
+				"operationId": "GetNetworkInformationByMachineId",
+				"responses": {
+					"200": {
+						"description": "List",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/INetworkInformation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Network Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateNetworkInformation",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Network Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_NetworkInformation.machineId_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/network-information/machine/{machineId}/latest": {
+			"get": {
+				"operationId": "GetLatestNetworkInformation",
+				"responses": {
+					"200": {
+						"description": "Latest Network Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/INetworkInformation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Network Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/network-information/machine/{machineId}/batch": {
+			"post": {
+				"operationId": "CreateNetworkInformationBatch",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"count": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"count"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Network Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/Omit_NetworkInformation.machineId_"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/network-information/{id}": {
+			"delete": {
+				"operationId": "DeleteNetworkInformation",
+				"responses": {
+					"200": {
+						"description": "Deleted"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Network Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/memory-information/machine/{machineId}": {
+			"get": {
+				"operationId": "GetMemoryInformationByMachineId",
+				"responses": {
+					"200": {
+						"description": "List",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IMemoryInformation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Memory Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateMemoryInformation",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Memory Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_MemoryInformation.machineId_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/memory-information/machine/{machineId}/latest": {
+			"get": {
+				"operationId": "GetLatestMemoryInformation",
+				"responses": {
+					"200": {
+						"description": "Latest Memory Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IMemoryInformation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Memory Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/memory-information/machine/{machineId}/batch": {
+			"post": {
+				"operationId": "CreateMemoryInformationBatch",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"count": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"count"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Memory Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/Omit_MemoryInformation.machineId_"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/memory-information/{id}": {
+			"delete": {
+				"operationId": "DeleteMemoryInformation",
+				"responses": {
+					"200": {
+						"description": "Deleted"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Memory Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/machines": {
+			"get": {
+				"operationId": "GetMachines",
+				"responses": {
+					"200": {
+						"description": "List",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IMachine"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get all registered machines",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateMachine",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Register a new machine",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Machine"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/machines/{id}": {
+			"get": {
+				"operationId": "GetMachine",
+				"responses": {
+					"200": {
+						"description": "Machine",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IMachine"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get a specific machine by database ID",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "UpsertMachine",
+				"responses": {
+					"200": {
+						"description": "Updated"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Update a machine",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IMachine"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteMachine",
+				"responses": {
+					"200": {
+						"description": "Deleted"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Delete a machine",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/machines/by-machine-id/{machineId}": {
+			"get": {
+				"operationId": "GetMachineByMachineId",
+				"responses": {
+					"200": {
+						"description": "Machine",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IMachine"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get a machine by machineId (client-generated ID)",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/machines/snapshot": {
+			"post": {
+				"operationId": "ReceiveSnapshot",
+				"responses": {
+					"201": {
+						"description": "Data Processed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"recordsCreated": {
+											"type": "number",
+											"format": "double"
+										},
+										"machineId": {
+											"type": "string"
+										},
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"recordsCreated",
+										"machineId",
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Receive full machine data snapshot (main endpoint for client apps)\r\nThis endpoint processes all machine monitoring data in one request",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/FullMachineData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/machines/{machineId}/latest": {
+			"get": {
+				"operationId": "GetLatestSnapshot",
+				"responses": {
+					"200": {
+						"description": "Latest Snapshot",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get latest snapshot for a machine",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/machines/{machineId}/history": {
+			"get": {
+				"operationId": "GetMachineHistory",
+				"responses": {
+					"200": {
+						"description": "Machine History",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get machine history with optional date range filtering",
+				"tags": [
+					"Machine"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/cpu-information/machine/{machineId}": {
+			"get": {
+				"operationId": "GetCpuInformationByMachineId",
+				"responses": {
+					"200": {
+						"description": "List",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ICpuInformation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get all CPU information for a machine",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateCpuInformation",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Create single CPU information record",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_CpuInformation.machineId_"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteCpuInformationByMachineId",
+				"responses": {
+					"200": {
+						"description": "Deleted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"deletedCount": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"deletedCount"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Delete all CPU information for a machine",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/cpu-information/{id}": {
+			"get": {
+				"operationId": "GetCpuInformation",
+				"responses": {
+					"200": {
+						"description": "CPU Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/ICpuInformation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get CPU information by ID",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteCpuInformation",
+				"responses": {
+					"200": {
+						"description": "Deleted"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Delete CPU information by ID",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/cpu-information/machine/{machineId}/latest": {
+			"get": {
+				"operationId": "GetLatestCpuInformation",
+				"responses": {
+					"200": {
+						"description": "Latest CPU Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/ICpuInformation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get latest CPU information for a machine",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/cpu-information/machine/{machineId}/batch": {
+			"post": {
+				"operationId": "CreateCpuInformationBatch",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"count": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"count"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Create multiple CPU information records (batch)",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/Omit_CpuInformation.machineId_"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/cpu-information/machine/{machineId}/range": {
+			"get": {
+				"operationId": "GetCpuInformationByDateRange",
+				"responses": {
+					"200": {
+						"description": "CPU Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ICpuInformation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Get CPU information by date range",
+				"tags": [
+					"CPU Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/antivirus-information/machine/{machineId}": {
+			"get": {
+				"operationId": "GetAntivirusInformationByMachineId",
+				"responses": {
+					"200": {
+						"description": "List",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IAntivirusInformation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Antivirus Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateAntivirusInformation",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Antivirus Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_AntivirusInformation.machineId_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/antivirus-information/machine/{machineId}/latest": {
+			"get": {
+				"operationId": "GetLatestAntivirusInformation",
+				"responses": {
+					"200": {
+						"description": "Latest Antivirus Information",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IAntivirusInformation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Antivirus Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/antivirus-information/machine/{machineId}/batch": {
+			"post": {
+				"operationId": "CreateAntivirusInformationBatch",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"count": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"count"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Antivirus Information"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "machineId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/Omit_AntivirusInformation.machineId_"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/antivirus-information/{id}": {
+			"delete": {
+				"operationId": "DeleteAntivirusInformation",
+				"responses": {
+					"200": {
+						"description": "Deleted"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Antivirus Information"
 				],
 				"security": [],
 				"parameters": [

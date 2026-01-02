@@ -1,20 +1,8 @@
 export const ModificationSchema = {
-    createdAt: { type: Date, default: Date.now },
-    createdBy: {
-        type: String,
-        required: true
-    },
-    createdByName: {
-        type: String,
-        required: true
-    },
-    updatedAt: { type: Date , default: null },
-    updatedBy: {
-        type: String,
-        required: true
-    },
-    updatedByName: {
-        type: String,
-        required: true
-    },
-}
+  createdAt: { type: Date, default: Date.now },
+  createdBy: { type: String, required: false, default: "system" },
+  createdByName: { type: String, required: false, default: "system" },
+  updatedAt: { type: Date, default: null },
+  updatedBy: { type: String, required: false, default: "system" },
+  updatedByName: { type: String, required: false, default: "system" },
+};

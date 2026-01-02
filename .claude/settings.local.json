@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsoa:*)",
+      "Bash(npx tsc)",
+      "Bash(curl:*)"
+    ]
+  }
+}

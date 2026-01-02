@@ -11,57 +11,88 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const tsoa_1 = require("tsoa");
 const UserService_1 = require("../services/UserService");
 let UserController = class UserController extends tsoa_1.Controller {
-    getUsers() {
-        return __awaiter(this, void 0, void 0, function* () {
+    async getUsers() {
+        try {
             this.setStatus(200);
-            return new UserService_1.UserService().getUsers();
-        });
+            return await new UserService_1.UserService().getUsers();
+        }
+        catch (error) {
+            this.setStatus(500);
+            throw error;
+        }
     }
-    getUser(id) {
-        return __awaiter(this, void 0, void 0, function* () {
+    async getUser(id) {
+        try {
+            const user = await new UserService_1.UserService().getUser(id);
+            if (!user) {
+                this.setStatus(404);
+                throw new Error("User not found");
+            }
             this.setStatus(200);
-            return new UserService_1.UserService().getUser(id);
-        });
+            return user;
+        }
+        catch (error) {
+            if (error.message === "User not found") {
+                throw error;
+            }
+            this.setStatus(500);
+            throw error;
+        }
     }
-    createUser(body) {
-        return __awaiter(this, void 0, void 0, function* () {
+    async createUser(body) {
+        try {
+            console.log("Creating User :: ", body);
+            this.setStatus(201);
+            const created = await new UserService_1.UserService().createUser(body);
+            // return created id so client and mongo-express can be validated
+            return { id: created._id.toString() };
+        }
+        catch (error) {
+            if (error.code === 11000) {
+                this.setStatus(400);
+                throw new Error("User with this email already exists");
+            }
+            this.setStatus(500);
+            throw error;
+        }
+    }
+    async upsertUser(id, body) {
+        try {
             this.setStatus(200);
-            new UserService_1.UserService().createUser(body);
+            await new UserService_1.UserService().upsertUser(body);
             return;
-        });
+        }
+        catch (error) {
+            if (error.message.includes("id is required")) {
+                this.setStatus(400);
+            }
+            else {
+                this.setStatus(500);
+            }
+            throw error;
+        }
     }
-    upsertUser(id, body) {
-        return __awaiter(this, void 0, void 0, function* () {
+    async deleteUser(id) {
+        try {
             this.setStatus(200);
-            new UserService_1.UserService().upsertUser(body);
+            await new UserService_1.UserService().deleteUser(id);
             return;
-        });
-    }
-    deleteUser(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.setStatus(200);
-            new UserService_1.UserService().deleteUser(id);
-            return;
-        });
+        }
+        catch (error) {
+            this.setStatus(500);
+            throw error;
+        }
     }
 };
 exports.UserController = UserController;
 __decorate([
     (0, tsoa_1.SuccessResponse)("200", "List"),
+    (0, tsoa_1.Response)("500", "Internal Server Error"),
     (0, tsoa_1.Get)(""),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -69,6 +100,8 @@ __decorate([
 ], UserController.prototype, "getUsers", null);
 __decorate([
     (0, tsoa_1.SuccessResponse)("200", "User"),
+    (0, tsoa_1.Response)("404", "Not Found"),
+    (0, tsoa_1.Response)("500", "Internal Server Error"),
     (0, tsoa_1.Get)("{id}"),
     __param(0, (0, tsoa_1.Path)()),
     __metadata("design:type", Function),
@@ -77,6 +110,8 @@ __decorate([
 ], UserController.prototype, "getUser", null);
 __decorate([
     (0, tsoa_1.SuccessResponse)("201", "Created"),
+    (0, tsoa_1.Response)("400", "Bad Request"),
+    (0, tsoa_1.Response)("500", "Internal Server Error"),
     (0, tsoa_1.Post)(""),
     __param(0, (0, tsoa_1.Body)()),
     __metadata("design:type", Function),
@@ -85,6 +120,8 @@ __decorate([
 ], UserController.prototype, "createUser", null);
 __decorate([
     (0, tsoa_1.SuccessResponse)("200", "Updated"),
+    (0, tsoa_1.Response)("400", "Bad Request"),
+    (0, tsoa_1.Response)("500", "Internal Server Error"),
     (0, tsoa_1.Put)("{id}"),
     __param(0, (0, tsoa_1.Path)()),
     __param(1, (0, tsoa_1.Body)()),
@@ -94,6 +131,7 @@ __decorate([
 ], UserController.prototype, "upsertUser", null);
 __decorate([
     (0, tsoa_1.SuccessResponse)("200", "Deleted"),
+    (0, tsoa_1.Response)("500", "Internal Server Error"),
     (0, tsoa_1.Delete)("{id}"),
     __param(0, (0, tsoa_1.Path)()),
     __metadata("design:type", Function),

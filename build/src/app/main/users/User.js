@@ -32,17 +32,59 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Default_1 = require("../../core/schemas/Default");
-// import { ModificationSchema } from "@core/schemas";
-// import { IModification } from "@core/types";
 const mongoose_1 = __importStar(require("mongoose"));
-const UserSchema = new mongoose_1.Schema(Object.assign({ name: {
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const UserSchema = new mongoose_1.Schema({
+    name: {
         type: String,
         required: true,
-    }, email: {
+    },
+    email: {
         type: String,
         required: true,
         unique: true,
-    } }, Default_1.ModificationSchema));
+        lowercase: true,
+        trim: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        select: false, // Don't include password in queries by default
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin", "moderator"],
+        default: "user",
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
+    ...Default_1.ModificationSchema,
+});
+// Hash password before saving
+UserSchema.pre("save", async function (next) {
+    // Only hash the password if it has been modified (or is new)
+    if (!this.isModified("password")) {
+        return next();
+    }
+    try {
+        // Generate salt and hash password
+        const salt = await bcrypt_1.default.genSalt(10);
+        this.password = await bcrypt_1.default.hash(this.password, salt);
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+});
+// Method to compare passwords
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+    return bcrypt_1.default.compare(candidatePassword, this.password);
+};
 exports.default = mongoose_1.default.model("User", UserSchema);
