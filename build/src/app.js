@@ -41,18 +41,30 @@ exports.app = void 0;
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const routes_1 = require("../build/routes");
 const express_1 = __importStar(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const helmet_1 = __importDefault(require("helmet"));
 const middlewares_1 = require("./app/core/middlewares");
 exports.app = (0, express_1.default)();
+// Security headers
+exports.app.use((0, helmet_1.default)());
+// CORS
+exports.app.use((0, cors_1.default)());
 // Body parser middleware
 exports.app.use((0, express_1.urlencoded)({
     extended: true,
 }));
 exports.app.use((0, express_1.json)());
-// Sanitize input to prevent XSS and injection attacks
-exports.app.use(middlewares_1.sanitizeInput);
 // Swagger documentation
 exports.app.use("/docs", swagger_ui_express_1.default.serve, async (_req, res) => {
-    return res.send(swagger_ui_express_1.default.generateHTML(await Promise.resolve().then(() => __importStar(require("../build/swagger.json")))));
+    const swaggerDoc = await Promise.resolve().then(() => __importStar(require("../build/swagger.json")));
+    const spec = {
+        ...swaggerDoc,
+        servers: [
+            { url: "http://localhost:7500/api/v1", description: "DEV" },
+            { url: "http://77.237.245.173:7500/api/v1", description: "LIVE" },
+        ],
+    };
+    return res.send(swagger_ui_express_1.default.generateHTML(spec));
 });
 // Register TSOA routes
 (0, routes_1.RegisterRoutes)(exports.app);

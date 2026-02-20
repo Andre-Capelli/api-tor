@@ -3,16 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.optionalAuth = exports.authorize = exports.authenticate = void 0;
 exports.expressAuthentication = expressAuthentication;
 const jwtUtils_1 = require("../utils/jwtUtils");
+// Known access level names mapped to their numeric levels.
+// Used for scope checks when the JWT contains accessLevel info.
+const ACCESS_LEVELS = {
+    master: 100,
+    admin: 50,
+    user: 40,
+};
 /**
  * Authentication middleware
- * Validates JWT token from Authorization header and extracts user information
- *
- * Usage: Add this middleware to routes that require authentication
- * Example: app.get('/protected', authenticate, handler)
+ * Validates JWT token from X-Token header and extracts user information
  */
 const authenticate = async (req, res, next) => {
     try {
-        // Extract token from Authorization header
         const token = (0, jwtUtils_1.extractTokenFromHeader)(req);
         if (!token) {
             res.status(401).json({
@@ -23,9 +26,7 @@ const authenticate = async (req, res, next) => {
             });
             return;
         }
-        // Verify and decode the token
         const decoded = (0, jwtUtils_1.verifyAccessToken)(token);
-        // Attach user information to request
         req.user = decoded;
         next();
     }
@@ -41,17 +42,16 @@ const authenticate = async (req, res, next) => {
 };
 exports.authenticate = authenticate;
 /**
- * Authorization middleware
- * Checks if the authenticated user has the required role(s)
+ * Authorization middleware using numeric access levels.
+ * Checks if the authenticated user's access level is high enough.
  *
- * @param roles - Array of roles allowed to access the resource
- *
- * Usage: authorize('admin', 'moderator')
+ * @param requiredLevelNames - Access level names that are allowed (e.g., "admin", "master")
+ *   The minimum numeric level from these names is used as the threshold.
+ *   Higher levels always pass (master passes admin checks).
  */
-const authorize = (...roles) => {
+const authorize = (...requiredLevelNames) => {
     return (req, res, next) => {
         try {
-            // Check if user is authenticated
             if (!req.user) {
                 res.status(401).json({
                     error: {
@@ -61,19 +61,18 @@ const authorize = (...roles) => {
                 });
                 return;
             }
-            // If no roles specified, just check if user is authenticated
-            if (roles.length === 0) {
+            if (requiredLevelNames.length === 0) {
                 next();
                 return;
             }
-            // Check if user has one of the required roles
-            if (!req.user.role || !roles.includes(req.user.role)) {
+            // Find the minimum level required from the scope names
+            const requiredLevel = Math.min(...requiredLevelNames.map((n) => ACCESS_LEVELS[n] ?? 0));
+            const userLevel = req.user.accessLevel ?? ACCESS_LEVELS[req.user.role || ""] ?? 0;
+            if (userLevel < requiredLevel) {
                 res.status(403).json({
                     error: {
                         message: "Forbidden - Insufficient permissions",
                         status: 403,
-                        requiredRoles: roles,
-                        userRole: req.user.role || "none",
                     },
                 });
                 return;
@@ -94,29 +93,29 @@ exports.authorize = authorize;
 /**
  * Optional authentication middleware
  * Extracts user information if token is available, but doesn't require it
- *
- * Usage: For routes that work with or without authentication
  */
 const optionalAuth = async (req, _res, next) => {
     try {
         const token = (0, jwtUtils_1.extractTokenFromHeader)(req);
         if (token) {
-            // Try to verify token if present
             const decoded = (0, jwtUtils_1.verifyAccessToken)(token);
             req.user = decoded;
         }
-        // Continue regardless of token validity
         next();
     }
     catch (error) {
-        // If token is invalid or expired, just continue without user
         next();
     }
 };
 exports.optionalAuth = optionalAuth;
 /**
  * TSOA Authentication handler
- * This function is called by TSOA for routes marked with @Security decorator
+ * Called by TSOA for routes marked with @Security decorator.
+ *
+ * Scopes represent access level names (e.g., ["admin"], ["master"]).
+ * The check uses numeric comparison: user's accessLevel must be >= the minimum
+ * level derived from the scope names. This means higher levels always pass
+ * (master at 100 passes any admin check at 50).
  */
 function expressAuthentication(request, securityName, scopes) {
     if (securityName === "jwt") {
@@ -126,10 +125,12 @@ function expressAuthentication(request, securityName, scopes) {
         }
         try {
             const decoded = (0, jwtUtils_1.verifyAccessToken)(token);
-            // If scopes (roles) are required, check them
             if (scopes && scopes.length > 0) {
-                if (!decoded.role || !scopes.includes(decoded.role)) {
-                    return Promise.reject(new Error(`Insufficient permissions. Required roles: ${scopes.join(", ")}`));
+                // Find the minimum level required from the scope names
+                const requiredLevel = Math.min(...scopes.map((s) => ACCESS_LEVELS[s] ?? 0));
+                const userLevel = decoded.accessLevel ?? ACCESS_LEVELS[decoded.role || ""] ?? 0;
+                if (userLevel < requiredLevel) {
+                    return Promise.reject(new Error(`Insufficient permissions. Required minimum level: ${requiredLevel}`));
                 }
             }
             return Promise.resolve(decoded);

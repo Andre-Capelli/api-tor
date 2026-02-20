@@ -14,6 +14,11 @@ export interface JwtPayload {
   email: string;
   name: string;
   role?: string;
+  organizationId?: string;
+  organizationType?: string;
+  accessLevelName?: string;
+  accessLevel?: number;
+  accessLevelScope?: string;
   iat?: number;
   exp?: number;
 }
@@ -95,23 +100,10 @@ export const verifyRefreshToken = (token: string): JwtPayload => {
 };
 
 /**
- * Extract token from request header
- * Supports: "Bearer <token>" or just "<token>"
+ * Extract token from X-Token request header
  */
 export const extractTokenFromHeader = (req: Request): string | null => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-    return null;
-  }
-
-  // Check if it's in "Bearer <token>" format
-  if (authHeader.startsWith("Bearer ")) {
-    return authHeader.substring(7);
-  }
-
-  // Otherwise, assume the entire header is the token
-  return authHeader;
+  return (req.headers["x-token"] as string) || null;
 };
 
 /**

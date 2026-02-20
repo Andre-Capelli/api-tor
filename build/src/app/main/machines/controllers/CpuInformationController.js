@@ -78,7 +78,7 @@ let CpuInformationController = class CpuInformationController extends tsoa_1.Con
         try {
             this.setStatus(201);
             const created = await new CpuInformationService_1.CpuInformationService().createCpuInformation(machineId, body);
-            return { id: created._id.toString() };
+            return { id: String(created._id) };
         }
         catch (error) {
             this.setStatus(500);
@@ -223,5 +223,6 @@ __decorate([
 ], CpuInformationController.prototype, "deleteCpuInformationByMachineId", null);
 exports.CpuInformationController = CpuInformationController = __decorate([
     (0, tsoa_1.Route)("cpu-information"),
-    (0, tsoa_1.Tags)("CPU Information")
+    (0, tsoa_1.Tags)("CPU Information"),
+    (0, tsoa_1.Security)("jwt")
 ], CpuInformationController);

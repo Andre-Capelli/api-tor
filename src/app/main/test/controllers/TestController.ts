@@ -8,7 +8,7 @@ import {
   Response,
   Tags,
 } from "tsoa";
-import { AuthenticatedRequest } from "../../../core/middlewares/authHandler";
+import { AuthenticatedRequest } from "@core/middlewares/authHandler";
 
 interface TestResponse {
   success: boolean;

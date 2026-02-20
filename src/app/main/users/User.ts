@@ -9,44 +9,60 @@ export interface User extends IModification {
   password: string;
   role?: string;
   isActive?: boolean;
+  organizationId?: string;
+  accessLevelId?: string;
 }
 
 export interface IUser extends User {
-  id: string;
+  id?: string;
 }
 
 export interface IUserDB extends User, Document {
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-const UserSchema: Schema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const UserSchema: Schema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      select: false, // Don't include password in queries by default
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin", "moderator"],
+      default: "user",
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    organizationId: {
+      type: Schema.Types.ObjectId,
+      ref: "Organization",
+      default: null,
+      index: true,
+    },
+    accessLevelId: {
+      type: Schema.Types.ObjectId,
+      ref: "AccessLevel",
+      default: null,
+    },
+    ...ModificationSchema,
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    select: false, // Don't include password in queries by default
-  },
-  role: {
-    type: String,
-    enum: ["user", "admin", "moderator"],
-    default: "user",
-  },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
-  ...ModificationSchema,
-});
+  { timestamps: true }
+);
 
 // Hash password before saving
 UserSchema.pre<IUserDB>("save", async function (next) {

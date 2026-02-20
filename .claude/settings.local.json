@@ -3,7 +3,13 @@
     "allow": [
       "Bash(npx tsoa:*)",
       "Bash(npx tsc)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(cd:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run g:routes:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker ps:*)",
+      "Bash(node -e:*)"
     ]
   }
 }

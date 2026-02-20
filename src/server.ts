@@ -1,12 +1,14 @@
 // src/server.ts
 import { app } from "./app";
 import connectDB from "./app/configs/mongodb/config";
+import { seedAccessLevels } from "./app/core/seeds";
 
 const port = process.env.NODE_PORT || 7500;
 
 (async () => {
   try {
     await connectDB();
+    await seedAccessLevels();
     app.listen(port, () =>
       console.log(`Example app listening at http://localhost:${port}`)
     );

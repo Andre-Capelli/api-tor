@@ -1,28 +1,23 @@
-import UserDB, { IUser, User } from "../User";
+import UserDB, { IUser, IUserDB, User } from "../User";
 
 export class UserService {
-  public async getUsers(): Promise<IUser[]> {
-    return await UserDB.find();
+  public async getUsers(filter?: Record<string, any>): Promise<IUser[]> {
+    return await UserDB.find(filter || {});
   }
 
   public async getUser(id: string): Promise<IUser | null> {
     return await UserDB.findById(id);
   }
 
-  public async createUser(data: User): Promise<any> {
-    // optionally validate/massage data here
-    const created = await UserDB.create(data);
-    return created;
+  public async createUser(data: User): Promise<IUserDB> {
+    return await UserDB.create(data);
   }
 
-  public async upsertUser(data: IUser): Promise<void> {
-    const id = (data as any).id || (data as any)._id;
-    if (!id) throw new Error("id is required for upsert");
+  public async upsertUser(id: string, data: User): Promise<void> {
     await UserDB.updateOne({ _id: id }, data, { upsert: true });
   }
 
-  public async deleteUser(id: IUser["id"]): Promise<void> {
+  public async deleteUser(id: string): Promise<void> {
     await UserDB.deleteOne({ _id: id });
-    return;
   }
 }

@@ -18,7 +18,48 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const tsoa_1 = require("tsoa");
 const User_1 = __importDefault(require("../User"));
-const jwtUtils_1 = require("../../../core/utils/jwtUtils");
+const AccessLevel_1 = __importDefault(require("@main/access-levels/AccessLevel"));
+const Organization_1 = __importDefault(require("@main/organizations/Organization"));
+const jwtUtils_1 = require("@core/utils/jwtUtils");
+/**
+ * Builds the enriched JWT payload from user + access level + organization data.
+ */
+async function buildTokenPayload(user) {
+    const payload = {
+        id: String(user._id),
+        email: user.email,
+        name: user.name,
+        role: user.role || "user",
+    };
+    // Populate access level data
+    if (user.accessLevelId) {
+        const accessLevel = await AccessLevel_1.default.findById(user.accessLevelId);
+        if (accessLevel) {
+            payload.accessLevelName = accessLevel.name;
+            payload.accessLevel = accessLevel.level;
+            payload.accessLevelScope = accessLevel.scope;
+            payload.role = accessLevel.name;
+        }
+    }
+    else if (user.role) {
+        // Backward compat: map old role string to access level
+        const accessLevel = await AccessLevel_1.default.findOne({ name: user.role });
+        if (accessLevel) {
+            payload.accessLevelName = accessLevel.name;
+            payload.accessLevel = accessLevel.level;
+            payload.accessLevelScope = accessLevel.scope;
+        }
+    }
+    // Populate organization data
+    if (user.organizationId) {
+        const org = await Organization_1.default.findById(user.organizationId);
+        if (org) {
+            payload.organizationId = String(org._id);
+            payload.organizationType = org.type;
+        }
+    }
+    return payload;
+}
 let AuthController = class AuthController extends tsoa_1.Controller {
     /**
      * User login - Generate JWT tokens
@@ -26,38 +67,34 @@ let AuthController = class AuthController extends tsoa_1.Controller {
     async login(body) {
         try {
             const { email, password } = body;
-            // Find user and include password field
             const user = await User_1.default.findOne({ email }).select("+password");
             if (!user) {
                 this.setStatus(401);
                 throw new Error("Invalid email or password");
             }
-            // Check if user is active
             if (!user.isActive) {
                 this.setStatus(401);
                 throw new Error("Account is inactive");
             }
-            // Verify password
             const isPasswordValid = await user.comparePassword(password);
             if (!isPasswordValid) {
                 this.setStatus(401);
                 throw new Error("Invalid email or password");
             }
-            // Generate JWT tokens
-            const tokens = (0, jwtUtils_1.generateTokenPair)({
-                id: user._id.toString(),
-                email: user.email,
-                name: user.name,
-                role: user.role || "user",
-            });
+            const tokenPayload = await buildTokenPayload(user);
+            const tokens = (0, jwtUtils_1.generateTokenPair)(tokenPayload);
             this.setStatus(200);
             return {
                 ...tokens,
                 user: {
-                    id: user._id.toString(),
+                    id: String(user._id),
                     name: user.name,
                     email: user.email,
-                    role: user.role || "user",
+                    role: tokenPayload.role || "user",
+                    organizationId: tokenPayload.organizationId,
+                    organizationType: tokenPayload.organizationType,
+                    accessLevelName: tokenPayload.accessLevelName,
+                    accessLevel: tokenPayload.accessLevel,
                 },
             };
         }
@@ -75,36 +112,37 @@ let AuthController = class AuthController extends tsoa_1.Controller {
      */
     async register(body) {
         try {
-            const { name, email, password, role } = body;
-            // Check if user already exists
+            const { name, email, password, organizationId } = body;
             const existingUser = await User_1.default.findOne({ email });
             if (existingUser) {
                 this.setStatus(400);
                 throw new Error("User with this email already exists");
             }
-            // Create new user (password will be hashed automatically by pre-save hook)
+            // Default to "user" access level
+            const defaultAccessLevel = await AccessLevel_1.default.findOne({ name: "user" });
             const user = await User_1.default.create({
                 name,
                 email,
                 password,
-                role: role || "user",
+                role: "user",
                 isActive: true,
+                organizationId: organizationId || null,
+                accessLevelId: defaultAccessLevel ? String(defaultAccessLevel._id) : null,
             });
-            // Generate JWT tokens
-            const tokens = (0, jwtUtils_1.generateTokenPair)({
-                id: user._id.toString(),
-                email: user.email,
-                name: user.name,
-                role: user.role || "user",
-            });
+            const tokenPayload = await buildTokenPayload(user);
+            const tokens = (0, jwtUtils_1.generateTokenPair)(tokenPayload);
             this.setStatus(201);
             return {
                 ...tokens,
                 user: {
-                    id: user._id.toString(),
+                    id: String(user._id),
                     name: user.name,
                     email: user.email,
-                    role: user.role || "user",
+                    role: tokenPayload.role || "user",
+                    organizationId: tokenPayload.organizationId,
+                    organizationType: tokenPayload.organizationType,
+                    accessLevelName: tokenPayload.accessLevelName,
+                    accessLevel: tokenPayload.accessLevel,
                 },
             };
         }
@@ -131,9 +169,7 @@ let AuthController = class AuthController extends tsoa_1.Controller {
                 this.setStatus(401);
                 throw new Error("Refresh token is required");
             }
-            // Verify refresh token
             const decoded = (0, jwtUtils_1.verifyRefreshToken)(refreshToken);
-            // Verify user still exists and is active
             const user = await User_1.default.findById(decoded.id);
             if (!user) {
                 this.setStatus(401);
@@ -143,13 +179,9 @@ let AuthController = class AuthController extends tsoa_1.Controller {
                 this.setStatus(401);
                 throw new Error("Account is inactive");
             }
-            // Generate new token pair
-            const tokens = (0, jwtUtils_1.generateTokenPair)({
-                id: user._id.toString(),
-                email: user.email,
-                name: user.name,
-                role: user.role || "user",
-            });
+            // Re-populate enriched payload for new tokens
+            const tokenPayload = await buildTokenPayload(user);
+            const tokens = (0, jwtUtils_1.generateTokenPair)(tokenPayload);
             this.setStatus(200);
             return tokens;
         }

@@ -88,20 +88,10 @@ const verifyRefreshToken = (token) => {
 };
 exports.verifyRefreshToken = verifyRefreshToken;
 /**
- * Extract token from request header
- * Supports: "Bearer <token>" or just "<token>"
+ * Extract token from X-Token request header
  */
 const extractTokenFromHeader = (req) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return null;
-    }
-    // Check if it's in "Bearer <token>" format
-    if (authHeader.startsWith("Bearer ")) {
-        return authHeader.substring(7);
-    }
-    // Otherwise, assume the entire header is the token
-    return authHeader;
+    return req.headers["x-token"] || null;
 };
 exports.extractTokenFromHeader = extractTokenFromHeader;
 /**

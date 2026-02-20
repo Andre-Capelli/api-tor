@@ -48,7 +48,7 @@ let NetworkInformationController = class NetworkInformationController extends ts
         try {
             this.setStatus(201);
             const created = await new NetworkInformationService_1.NetworkInformationService().createNetworkInformation(machineId, body);
-            return { id: created._id.toString() };
+            return { id: String(created._id) };
         }
         catch (error) {
             this.setStatus(500);
@@ -130,5 +130,6 @@ __decorate([
 ], NetworkInformationController.prototype, "deleteNetworkInformation", null);
 exports.NetworkInformationController = NetworkInformationController = __decorate([
     (0, tsoa_1.Route)("network-information"),
-    (0, tsoa_1.Tags)("Network Information")
+    (0, tsoa_1.Tags)("Network Information"),
+    (0, tsoa_1.Security)("jwt")
 ], NetworkInformationController);

@@ -2,14 +2,21 @@
 import swaggerUi from "swagger-ui-express";
 import { RegisterRoutes } from "../build/routes";
 import express, { json, urlencoded } from "express";
+import cors from "cors";
+import helmet from "helmet";
 import {
   errorHandler,
   notFoundHandler,
   handleValidationError,
-  sanitizeInput,
 } from "./app/core/middlewares";
 
 export const app = express();
+
+// Security headers
+app.use(helmet());
+
+// CORS
+app.use(cors());
 
 // Body parser middleware
 app.use(
@@ -19,14 +26,17 @@ app.use(
 );
 app.use(json());
 
-// Sanitize input to prevent XSS and injection attacks
-app.use(sanitizeInput);
-
 // Swagger documentation
 app.use("/docs", swaggerUi.serve, async (_req: any, res: any) => {
-  return res.send(
-    swaggerUi.generateHTML(await import("../build/swagger.json"))
-  );
+  const swaggerDoc = await import("../build/swagger.json");
+  const spec = {
+    ...swaggerDoc,
+    servers: [
+      { url: "http://localhost:7500/api/v1", description: "DEV" },
+      { url: "http://77.237.245.173:7500/api/v1", description: "LIVE" },
+    ],
+  };
+  return res.send(swaggerUi.generateHTML(spec));
 });
 
 // Register TSOA routes

@@ -6,24 +6,32 @@ import {
   Path,
   Post,
   Put,
+  Request,
   Response,
   Route,
+  Security,
   SuccessResponse,
   Tags,
 } from "tsoa";
 import { IUser, User } from "../User";
 import { UserService } from "../services/UserService";
+import { buildOrgScopeFilter } from "@core/utils/scopeUtils";
+import { AuthenticatedRequest } from "@core/middlewares/authHandler";
 
 @Route("users")
 @Tags("User")
+@Security("jwt", ["admin"])
 export class UserController extends Controller {
   @SuccessResponse("200", "List")
   @Response("500", "Internal Server Error")
   @Get("")
-  public async getUsers(): Promise<IUser[]> {
+  public async getUsers(
+    @Request() req: AuthenticatedRequest
+  ): Promise<IUser[]> {
     try {
       this.setStatus(200);
-      return await new UserService().getUsers();
+      const scopeFilter = await buildOrgScopeFilter(req.user!);
+      return await new UserService().getUsers(scopeFilter);
     } catch (error) {
       this.setStatus(500);
       throw error;
@@ -58,11 +66,9 @@ export class UserController extends Controller {
   @Post("")
   public async createUser(@Body() body: User): Promise<{ id: string }> {
     try {
-      console.log("Creating User :: ", body);
       this.setStatus(201);
       const created = await new UserService().createUser(body);
-      // return created id so client and mongo-express can be validated
-      return { id: created._id.toString() };
+      return { id: String(created._id) };
     } catch (error) {
       if ((error as any).code === 11000) {
         this.setStatus(400);
@@ -79,18 +85,14 @@ export class UserController extends Controller {
   @Put("{id}")
   public async upsertUser(
     @Path() id: string,
-    @Body() body: IUser
+    @Body() body: User
   ): Promise<void> {
     try {
       this.setStatus(200);
-      await new UserService().upsertUser(body);
+      await new UserService().upsertUser(id, body);
       return;
     } catch (error) {
-      if ((error as Error).message.includes("id is required")) {
-        this.setStatus(400);
-      } else {
-        this.setStatus(500);
-      }
+      this.setStatus(500);
       throw error;
     }
   }

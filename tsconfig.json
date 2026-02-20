@@ -14,7 +14,10 @@
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
-      "@core/*": ["app/core/*"]
+      "@core/*": ["app/core/*"],
+      "@main/*": ["app/main/*"],
+      "@modules/*": ["modules/*"],
+      "@monitoring/*": ["modules/monitoring/*"]
     }
   },
   "include": ["src/**/*.ts"],

@@ -48,7 +48,7 @@ let AntivirusInformationController = class AntivirusInformationController extend
         try {
             this.setStatus(201);
             const created = await new AntivirusInformationService_1.AntivirusInformationService().createAntivirusInformation(machineId, body);
-            return { id: created._id.toString() };
+            return { id: String(created._id) };
         }
         catch (error) {
             this.setStatus(500);
@@ -130,5 +130,6 @@ __decorate([
 ], AntivirusInformationController.prototype, "deleteAntivirusInformation", null);
 exports.AntivirusInformationController = AntivirusInformationController = __decorate([
     (0, tsoa_1.Route)("antivirus-information"),
-    (0, tsoa_1.Tags)("Antivirus Information")
+    (0, tsoa_1.Tags)("Antivirus Information"),
+    (0, tsoa_1.Security)("jwt")
 ], AntivirusInformationController);

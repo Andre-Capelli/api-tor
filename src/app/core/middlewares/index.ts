@@ -7,8 +7,6 @@ export type { AuthenticatedRequest } from "./authHandler";
 
 // Validation middlewares
 export {
-  validateRequest,
-  sanitizeInput,
   handleValidationError,
   validateObjectId,
   validateEmail,

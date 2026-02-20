@@ -48,7 +48,7 @@ let MemoryInformationController = class MemoryInformationController extends tsoa
         try {
             this.setStatus(201);
             const created = await new MemoryInformationService_1.MemoryInformationService().createMemoryInformation(machineId, body);
-            return { id: created._id.toString() };
+            return { id: String(created._id) };
         }
         catch (error) {
             this.setStatus(500);
@@ -130,5 +130,6 @@ __decorate([
 ], MemoryInformationController.prototype, "deleteMemoryInformation", null);
 exports.MemoryInformationController = MemoryInformationController = __decorate([
     (0, tsoa_1.Route)("memory-information"),
-    (0, tsoa_1.Tags)("Memory Information")
+    (0, tsoa_1.Tags)("Memory Information"),
+    (0, tsoa_1.Security)("jwt")
 ], MemoryInformationController);

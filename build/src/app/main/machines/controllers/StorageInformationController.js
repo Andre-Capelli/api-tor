@@ -66,7 +66,7 @@ let StorageInformationController = class StorageInformationController extends ts
         try {
             this.setStatus(201);
             const created = await new StorageInformationService_1.StorageInformationService().createStorageInformation(machineId, body);
-            return { id: created._id.toString() };
+            return { id: String(created._id) };
         }
         catch (error) {
             this.setStatus(500);
@@ -199,5 +199,6 @@ __decorate([
 ], StorageInformationController.prototype, "deleteStorageInformationByMachineId", null);
 exports.StorageInformationController = StorageInformationController = __decorate([
     (0, tsoa_1.Route)("storage-information"),
-    (0, tsoa_1.Tags)("Storage Information")
+    (0, tsoa_1.Tags)("Storage Information"),
+    (0, tsoa_1.Security)("jwt")
 ], StorageInformationController);

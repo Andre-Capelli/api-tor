@@ -65,8 +65,19 @@ const UserSchema = new mongoose_1.Schema({
         type: Boolean,
         default: true,
     },
+    organizationId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Organization",
+        default: null,
+        index: true,
+    },
+    accessLevelId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "AccessLevel",
+        default: null,
+    },
     ...Default_1.ModificationSchema,
-});
+}, { timestamps: true });
 // Hash password before saving
 UserSchema.pre("save", async function (next) {
     // Only hash the password if it has been modified (or is new)

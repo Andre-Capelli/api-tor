@@ -8,10 +8,13 @@ import {
   Tags,
 } from "tsoa";
 import UserDB from "../User";
+import AccessLevelDB from "@main/access-levels/AccessLevel";
+import OrganizationDB from "@main/organizations/Organization";
 import {
   generateTokenPair,
   verifyRefreshToken,
-} from "../../../core/utils/jwtUtils";
+  JwtPayload,
+} from "@core/utils/jwtUtils";
 
 interface LoginRequest {
   email: string;
@@ -22,7 +25,7 @@ interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  role?: string;
+  organizationId?: string;
 }
 
 interface RefreshTokenRequest {
@@ -37,7 +40,53 @@ interface AuthResponse {
     name: string;
     email: string;
     role: string;
+    organizationId?: string;
+    organizationType?: string;
+    accessLevelName?: string;
+    accessLevel?: number;
   };
+}
+
+/**
+ * Builds the enriched JWT payload from user + access level + organization data.
+ */
+async function buildTokenPayload(user: any): Promise<Omit<JwtPayload, "iat" | "exp">> {
+  const payload: Omit<JwtPayload, "iat" | "exp"> = {
+    id: String(user._id),
+    email: user.email,
+    name: user.name,
+    role: user.role || "user",
+  };
+
+  // Populate access level data
+  if (user.accessLevelId) {
+    const accessLevel = await AccessLevelDB.findById(user.accessLevelId);
+    if (accessLevel) {
+      payload.accessLevelName = accessLevel.name;
+      payload.accessLevel = accessLevel.level;
+      payload.accessLevelScope = accessLevel.scope;
+      payload.role = accessLevel.name;
+    }
+  } else if (user.role) {
+    // Backward compat: map old role string to access level
+    const accessLevel = await AccessLevelDB.findOne({ name: user.role });
+    if (accessLevel) {
+      payload.accessLevelName = accessLevel.name;
+      payload.accessLevel = accessLevel.level;
+      payload.accessLevelScope = accessLevel.scope;
+    }
+  }
+
+  // Populate organization data
+  if (user.organizationId) {
+    const org = await OrganizationDB.findById(user.organizationId);
+    if (org) {
+      payload.organizationId = String(org._id);
+      payload.organizationType = org.type;
+    }
+  }
+
+  return payload;
 }
 
 @Route("auth")
@@ -54,7 +103,6 @@ export class AuthController extends Controller {
     try {
       const { email, password } = body;
 
-      // Find user and include password field
       const user = await UserDB.findOne({ email }).select("+password");
 
       if (!user) {
@@ -62,13 +110,11 @@ export class AuthController extends Controller {
         throw new Error("Invalid email or password");
       }
 
-      // Check if user is active
       if (!user.isActive) {
         this.setStatus(401);
         throw new Error("Account is inactive");
       }
 
-      // Verify password
       const isPasswordValid = await user.comparePassword(password);
 
       if (!isPasswordValid) {
@@ -76,22 +122,21 @@ export class AuthController extends Controller {
         throw new Error("Invalid email or password");
       }
 
-      // Generate JWT tokens
-      const tokens = generateTokenPair({
-        id: (user._id as any).toString(),
-        email: user.email,
-        name: user.name,
-        role: user.role || "user",
-      });
+      const tokenPayload = await buildTokenPayload(user);
+      const tokens = generateTokenPair(tokenPayload);
 
       this.setStatus(200);
       return {
         ...tokens,
         user: {
-          id: (user._id as any).toString(),
+          id: String(user._id),
           name: user.name,
           email: user.email,
-          role: user.role || "user",
+          role: tokenPayload.role || "user",
+          organizationId: tokenPayload.organizationId,
+          organizationType: tokenPayload.organizationType,
+          accessLevelName: tokenPayload.accessLevelName,
+          accessLevel: tokenPayload.accessLevel,
         },
       };
     } catch (error) {
@@ -113,9 +158,8 @@ export class AuthController extends Controller {
   @Post("register")
   public async register(@Body() body: RegisterRequest): Promise<AuthResponse> {
     try {
-      const { name, email, password, role } = body;
+      const { name, email, password, organizationId } = body;
 
-      // Check if user already exists
       const existingUser = await UserDB.findOne({ email });
 
       if (existingUser) {
@@ -123,31 +167,34 @@ export class AuthController extends Controller {
         throw new Error("User with this email already exists");
       }
 
-      // Create new user (password will be hashed automatically by pre-save hook)
+      // Default to "user" access level
+      const defaultAccessLevel = await AccessLevelDB.findOne({ name: "user" });
+
       const user = await UserDB.create({
         name,
         email,
         password,
-        role: role || "user",
+        role: "user",
         isActive: true,
+        organizationId: organizationId || null,
+        accessLevelId: defaultAccessLevel ? String(defaultAccessLevel._id) : null,
       });
 
-      // Generate JWT tokens
-      const tokens = generateTokenPair({
-        id: (user._id as any).toString(),
-        email: user.email,
-        name: user.name,
-        role: user.role || "user",
-      });
+      const tokenPayload = await buildTokenPayload(user);
+      const tokens = generateTokenPair(tokenPayload);
 
       this.setStatus(201);
       return {
         ...tokens,
         user: {
-          id: (user._id as any).toString(),
+          id: String(user._id),
           name: user.name,
           email: user.email,
-          role: user.role || "user",
+          role: tokenPayload.role || "user",
+          organizationId: tokenPayload.organizationId,
+          organizationType: tokenPayload.organizationType,
+          accessLevelName: tokenPayload.accessLevelName,
+          accessLevel: tokenPayload.accessLevel,
         },
       };
     } catch (error) {
@@ -182,10 +229,8 @@ export class AuthController extends Controller {
         throw new Error("Refresh token is required");
       }
 
-      // Verify refresh token
       const decoded = verifyRefreshToken(refreshToken);
 
-      // Verify user still exists and is active
       const user = await UserDB.findById(decoded.id);
 
       if (!user) {
@@ -198,13 +243,9 @@ export class AuthController extends Controller {
         throw new Error("Account is inactive");
       }
 
-      // Generate new token pair
-      const tokens = generateTokenPair({
-        id: (user._id as any).toString(),
-        email: user.email,
-        name: user.name,
-        role: user.role || "user",
-      });
+      // Re-populate enriched payload for new tokens
+      const tokenPayload = await buildTokenPayload(user);
+      const tokens = generateTokenPair(tokenPayload);
 
       this.setStatus(200);
       return tokens;

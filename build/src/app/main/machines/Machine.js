@@ -53,6 +53,12 @@ const MachineSchema = new mongoose_1.Schema({
     owner: {
         type: String,
     },
+    organizationId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Organization",
+        default: null,
+        index: true,
+    },
 }, { timestamps: true });
 // Add modification tracking
 MachineSchema.add(core_1.ModificationSchema);

@@ -6,28 +6,35 @@ import {
   Path,
   Post,
   Put,
-  Query,
+  Request,
   Response,
   Route,
+  Security,
   SuccessResponse,
   Tags,
 } from "tsoa";
 import { IMachine, Machine } from "../Machine";
-import { MachineService, FullMachineData } from "../services/MachineService";
+import { MachineService } from "../services/MachineService";
+import { buildOrgScopeFilter } from "@core/utils/scopeUtils";
+import { AuthenticatedRequest } from "@core/middlewares/authHandler";
 
 @Route("machines")
 @Tags("Machine")
+@Security("jwt")
 export class MachineController extends Controller {
   /**
-   * Get all registered machines
+   * Get all registered machines (scoped to user's organization)
    */
   @SuccessResponse("200", "List")
   @Response("500", "Internal Server Error")
   @Get("")
-  public async getMachines(): Promise<IMachine[]> {
+  public async getMachines(
+    @Request() req: AuthenticatedRequest
+  ): Promise<IMachine[]> {
     try {
       this.setStatus(200);
-      return await new MachineService().getMachines();
+      const scopeFilter = await buildOrgScopeFilter(req.user!);
+      return await new MachineService().getMachines(scopeFilter);
     } catch (error) {
       this.setStatus(500);
       throw error;
@@ -97,10 +104,9 @@ export class MachineController extends Controller {
   @Post("")
   public async createMachine(@Body() body: Machine): Promise<{ id: string }> {
     try {
-      console.log("Creating Machine :: ", body);
       this.setStatus(201);
       const created = await new MachineService().createMachine(body);
-      return { id: created._id.toString() };
+      return { id: String(created._id) };
     } catch (error) {
       if ((error as any).code === 11000) {
         this.setStatus(400);
@@ -120,18 +126,14 @@ export class MachineController extends Controller {
   @Put("{id}")
   public async upsertMachine(
     @Path() id: string,
-    @Body() body: IMachine
+    @Body() body: Machine
   ): Promise<void> {
     try {
       this.setStatus(200);
-      await new MachineService().upsertMachine(body);
+      await new MachineService().upsertMachine(id, body);
       return;
     } catch (error) {
-      if ((error as Error).message.includes("id is required")) {
-        this.setStatus(400);
-      } else {
-        this.setStatus(500);
-      }
+      this.setStatus(500);
       throw error;
     }
   }
@@ -147,87 +149,6 @@ export class MachineController extends Controller {
       this.setStatus(200);
       await new MachineService().deleteMachine(id);
       return;
-    } catch (error) {
-      this.setStatus(500);
-      throw error;
-    }
-  }
-
-  /**
-   * Receive full machine data snapshot (main endpoint for client apps)
-   * This endpoint processes all machine monitoring data in one request
-   */
-  @SuccessResponse("201", "Data Processed")
-  @Response("400", "Bad Request")
-  @Response("500", "Internal Server Error")
-  @Post("snapshot")
-  public async receiveSnapshot(@Body() body: FullMachineData): Promise<{
-    success: boolean;
-    machineId: string;
-    recordsCreated: number;
-  }> {
-    try {
-      console.log("Receiving machine snapshot for:", body.machineId);
-      this.setStatus(201);
-      const result = await new MachineService().processFullMachineData(body);
-      return {
-        success: result.success,
-        machineId: body.machineId,
-        recordsCreated: result.recordsCreated,
-      };
-    } catch (error) {
-      console.error("Error processing machine snapshot:", error);
-      this.setStatus(500);
-      throw error;
-    }
-  }
-
-  /**
-   * Get latest snapshot for a machine
-   */
-  @SuccessResponse("200", "Latest Snapshot")
-  @Response("404", "Not Found")
-  @Response("500", "Internal Server Error")
-  @Get("{machineId}/latest")
-  public async getLatestSnapshot(@Path() machineId: string): Promise<any> {
-    try {
-      const snapshot = await new MachineService().getLatestSnapshot(machineId);
-      if (!snapshot) {
-        this.setStatus(404);
-        throw new Error("No snapshots found for this machine");
-      }
-      this.setStatus(200);
-      return snapshot;
-    } catch (error) {
-      if ((error as Error).message.includes("No snapshots found")) {
-        throw error;
-      }
-      this.setStatus(500);
-      throw error;
-    }
-  }
-
-  /**
-   * Get machine history with optional date range filtering
-   */
-  @SuccessResponse("200", "Machine History")
-  @Response("500", "Internal Server Error")
-  @Get("{machineId}/history")
-  public async getMachineHistory(
-    @Path() machineId: string,
-    @Query() startDate?: string,
-    @Query() endDate?: string
-  ): Promise<any> {
-    try {
-      const start = startDate ? new Date(startDate) : undefined;
-      const end = endDate ? new Date(endDate) : undefined;
-
-      this.setStatus(200);
-      return await new MachineService().getMachineHistory(
-        machineId,
-        start,
-        end
-      );
     } catch (error) {
       this.setStatus(500);
       throw error;

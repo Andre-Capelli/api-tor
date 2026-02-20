@@ -15,11 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const tsoa_1 = require("tsoa");
 const UserService_1 = require("../services/UserService");
+const scopeUtils_1 = require("@core/utils/scopeUtils");
 let UserController = class UserController extends tsoa_1.Controller {
-    async getUsers() {
+    async getUsers(req) {
         try {
             this.setStatus(200);
-            return await new UserService_1.UserService().getUsers();
+            const scopeFilter = await (0, scopeUtils_1.buildOrgScopeFilter)(req.user);
+            return await new UserService_1.UserService().getUsers(scopeFilter);
         }
         catch (error) {
             this.setStatus(500);
@@ -46,11 +48,9 @@ let UserController = class UserController extends tsoa_1.Controller {
     }
     async createUser(body) {
         try {
-            console.log("Creating User :: ", body);
             this.setStatus(201);
             const created = await new UserService_1.UserService().createUser(body);
-            // return created id so client and mongo-express can be validated
-            return { id: created._id.toString() };
+            return { id: String(created._id) };
         }
         catch (error) {
             if (error.code === 11000) {
@@ -64,16 +64,11 @@ let UserController = class UserController extends tsoa_1.Controller {
     async upsertUser(id, body) {
         try {
             this.setStatus(200);
-            await new UserService_1.UserService().upsertUser(body);
+            await new UserService_1.UserService().upsertUser(id, body);
             return;
         }
         catch (error) {
-            if (error.message.includes("id is required")) {
-                this.setStatus(400);
-            }
-            else {
-                this.setStatus(500);
-            }
+            this.setStatus(500);
             throw error;
         }
     }
@@ -94,8 +89,9 @@ __decorate([
     (0, tsoa_1.SuccessResponse)("200", "List"),
     (0, tsoa_1.Response)("500", "Internal Server Error"),
     (0, tsoa_1.Get)(""),
+    __param(0, (0, tsoa_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUsers", null);
 __decorate([
@@ -140,5 +136,6 @@ __decorate([
 ], UserController.prototype, "deleteUser", null);
 exports.UserController = UserController = __decorate([
     (0, tsoa_1.Route)("users"),
-    (0, tsoa_1.Tags)("User")
+    (0, tsoa_1.Tags)("User"),
+    (0, tsoa_1.Security)("jwt", ["admin"])
 ], UserController);

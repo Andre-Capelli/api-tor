@@ -16,11 +16,12 @@ export interface Machine {
   description?: string;
   location?: string;
   owner?: string;
+  organizationId?: string;
 }
 
 // Machine with database ID
 export interface IMachine extends Machine {
-  id: string;
+  id?: string;
 }
 
 // Machine Mongoose Document
@@ -77,6 +78,12 @@ const MachineSchema = new Schema<IMachineDB>(
     },
     owner: {
       type: String,
+    },
+    organizationId: {
+      type: Schema.Types.ObjectId,
+      ref: "Organization",
+      default: null,
+      index: true,
     },
   },
   { timestamps: true }
