@@ -130,6 +130,6 @@ __decorate([
 ], NetworkInformationController.prototype, "deleteNetworkInformation", null);
 exports.NetworkInformationController = NetworkInformationController = __decorate([
     (0, tsoa_1.Route)("monitoring/network-information"),
-    (0, tsoa_1.Tags)("Network Information"),
+    (0, tsoa_1.Tags)("Monitoring - Network"),
     (0, tsoa_1.Security)("jwt")
 ], NetworkInformationController);

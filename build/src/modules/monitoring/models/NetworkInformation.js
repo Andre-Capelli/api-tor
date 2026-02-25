@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const config_1 = require("../../../app/configs/mongodb/config");
 const core_1 = require("../../../app/core");
 // Network Information Schema
 const NetworkInformationSchema = new mongoose_1.Schema({
@@ -48,5 +49,5 @@ const NetworkInformationSchema = new mongoose_1.Schema({
 NetworkInformationSchema.add(core_1.ModificationSchema);
 // Compound index for efficient queries
 NetworkInformationSchema.index({ machineId: 1, timestamp: -1 });
-const NetworkInformationDB = (0, mongoose_1.model)("NetworkInformation", NetworkInformationSchema);
+const NetworkInformationDB = config_1.modConnection.model("NetworkInformation", NetworkInformationSchema);
 exports.default = NetworkInformationDB;

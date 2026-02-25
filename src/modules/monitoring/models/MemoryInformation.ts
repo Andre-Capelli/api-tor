@@ -1,4 +1,5 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, Document } from "mongoose";
+import { modConnection } from "../../../app/configs/mongodb/config";
 import { ModificationSchema, IModification } from "../../../app/core";
 
 // Memory Information interface
@@ -59,6 +60,6 @@ MemoryInformationSchema.add(ModificationSchema);
 // Compound index for efficient queries
 MemoryInformationSchema.index({ machineId: 1, timestamp: -1 });
 
-const MemoryInformationDB = model<IMemoryInformationDB>("MemoryInformation", MemoryInformationSchema);
+const MemoryInformationDB = modConnection.model<IMemoryInformationDB>("MemoryInformation", MemoryInformationSchema);
 
 export default MemoryInformationDB;

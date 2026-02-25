@@ -136,6 +136,6 @@ __decorate([
 ], UserController.prototype, "deleteUser", null);
 exports.UserController = UserController = __decorate([
     (0, tsoa_1.Route)("users"),
-    (0, tsoa_1.Tags)("User"),
+    (0, tsoa_1.Tags)("Users"),
     (0, tsoa_1.Security)("jwt", ["admin"])
 ], UserController);

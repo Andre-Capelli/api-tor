@@ -7,7 +7,6 @@ export interface User extends IModification {
   name: string;
   email: string;
   password: string;
-  role?: string;
   isActive?: boolean;
   organizationId?: string;
   accessLevelId?: string;
@@ -38,11 +37,6 @@ const UserSchema: Schema = new Schema(
       type: String,
       required: true,
       select: false, // Don't include password in queries by default
-    },
-    role: {
-      type: String,
-      enum: ["user", "admin", "moderator"],
-      default: "user",
     },
     isActive: {
       type: Boolean,

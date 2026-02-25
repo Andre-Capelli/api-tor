@@ -3,11 +3,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const core_1 = require("../../core");
 const AccessLevelSchema = new mongoose_1.Schema({
-    name: {
+    key: {
         type: String,
         required: true,
         unique: true,
         trim: true,
+        lowercase: true,
+    },
+    name: {
+        type: mongoose_1.Schema.Types.Mixed,
+        required: true,
     },
     level: {
         type: Number,

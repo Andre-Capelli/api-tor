@@ -199,6 +199,6 @@ __decorate([
 ], StorageInformationController.prototype, "deleteStorageInformationByMachineId", null);
 exports.StorageInformationController = StorageInformationController = __decorate([
     (0, tsoa_1.Route)("monitoring/storage-information"),
-    (0, tsoa_1.Tags)("Storage Information"),
+    (0, tsoa_1.Tags)("Monitoring - Storage"),
     (0, tsoa_1.Security)("jwt")
 ], StorageInformationController);

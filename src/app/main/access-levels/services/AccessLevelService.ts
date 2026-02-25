@@ -9,8 +9,8 @@ export class AccessLevelService {
     return await AccessLevelDB.findById(id);
   }
 
-  public async getByName(name: string): Promise<IAccessLevelDB | null> {
-    return await AccessLevelDB.findOne({ name });
+  public async getByKey(key: string): Promise<IAccessLevelDB | null> {
+    return await AccessLevelDB.findOne({ key });
   }
 
   public async getByLevel(level: number): Promise<IAccessLevelDB | null> {

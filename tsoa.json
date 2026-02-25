@@ -13,7 +13,28 @@
         "in": "header",
         "description": "JWT token sent via X-Token header. Example: \"X-Token: {token}\""
       }
-    }
+    },
+    "tags": [
+      { "name": "Auth", "description": "Authentication endpoints (login, register, refresh)" },
+      { "name": "Users", "description": "User management" },
+      { "name": "Admin - Access Levels", "description": "Access level management (master only)" },
+      { "name": "Admin - Organizations", "description": "Organization management" },
+      { "name": "Admin - Plans", "description": "Subscription plan management" },
+      { "name": "Admin - Subscriptions", "description": "Subscription management" },
+      { "name": "Admin - Custom Fields", "description": "Custom field definitions" },
+      { "name": "Machines", "description": "Machine management" },
+      { "name": "System", "description": "System bundle (languages + labels + config)" },
+      { "name": "System - Languages", "description": "Language management (master only)" },
+      { "name": "System - Labels", "description": "Translation label management (master only)" },
+      { "name": "System - Config", "description": "Site configuration (master only)" },
+      { "name": "Monitoring", "description": "Machine monitoring data" },
+      { "name": "Monitoring - CPU", "description": "CPU information data" },
+      { "name": "Monitoring - Memory", "description": "Memory information data" },
+      { "name": "Monitoring - Storage", "description": "Storage information data" },
+      { "name": "Monitoring - Network", "description": "Network information data" },
+      { "name": "Monitoring - Antivirus", "description": "Antivirus information data" },
+      { "name": "Dev - Test", "description": "Development test endpoints" }
+    ]
   },
   "routes": {
     "routesDir": "build",

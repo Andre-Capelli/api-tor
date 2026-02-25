@@ -1,4 +1,5 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, Document } from "mongoose";
+import { modConnection } from "../../../app/configs/mongodb/config";
 import { ModificationSchema, IModification } from "../../../app/core";
 
 // Disk interface
@@ -176,6 +177,6 @@ StorageInformationSchema.add(ModificationSchema);
 // Compound index for efficient queries
 StorageInformationSchema.index({ machineId: 1, timestamp: -1 });
 
-const StorageInformationDB = model<IStorageInformationDB>("StorageInformation", StorageInformationSchema);
+const StorageInformationDB = modConnection.model<IStorageInformationDB>("StorageInformation", StorageInformationSchema);
 
 export default StorageInformationDB;

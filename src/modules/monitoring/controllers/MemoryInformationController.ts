@@ -16,7 +16,7 @@ import { MemoryInformation, IMemoryInformation } from "../models/MemoryInformati
 import { MemoryInformationService } from "../services/MemoryInformationService";
 
 @Route("monitoring/memory-information")
-@Tags("Memory Information")
+@Tags("Monitoring - Memory")
 @Security("jwt")
 export class MemoryInformationController extends Controller {
   @SuccessResponse("200", "List")

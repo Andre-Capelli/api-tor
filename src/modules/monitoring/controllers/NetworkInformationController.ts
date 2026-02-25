@@ -16,7 +16,7 @@ import { NetworkInformation, INetworkInformation } from "../models/NetworkInform
 import { NetworkInformationService } from "../services/NetworkInformationService";
 
 @Route("monitoring/network-information")
-@Tags("Network Information")
+@Tags("Monitoring - Network")
 @Security("jwt")
 export class NetworkInformationController extends Controller {
   @SuccessResponse("200", "List")

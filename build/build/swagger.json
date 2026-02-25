@@ -828,9 +828,6 @@
                     "password": {
                         "type": "string"
                     },
-                    "role": {
-                        "type": "string"
-                    },
                     "isActive": {
                         "type": "boolean"
                     },
@@ -883,9 +880,6 @@
                     "password": {
                         "type": "string"
                     },
-                    "role": {
-                        "type": "string"
-                    },
                     "isActive": {
                         "type": "boolean"
                     },
@@ -914,20 +908,17 @@
                     },
                     "user": {
                         "properties": {
-                            "accessLevel": {
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "accessLevelName": {
-                                "type": "string"
-                            },
                             "organizationType": {
                                 "type": "string"
                             },
                             "organizationId": {
                                 "type": "string"
                             },
-                            "role": {
+                            "accessLevel": {
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "accessLevelName": {
                                 "type": "string"
                             },
                             "email": {
@@ -941,7 +932,6 @@
                             }
                         },
                         "required": [
-                            "role",
                             "email",
                             "name",
                             "id"
@@ -1000,10 +990,14 @@
                 "properties": {
                     "refreshToken": {
                         "type": "string"
+                    },
+                    "accessToken": {
+                        "type": "string"
                     }
                 },
                 "required": [
-                    "refreshToken"
+                    "refreshToken",
+                    "accessToken"
                 ],
                 "type": "object",
                 "additionalProperties": false
@@ -1018,7 +1012,7 @@
                     },
                     "user": {
                         "properties": {
-                            "role": {
+                            "accessLevelName": {
                                 "type": "string"
                             },
                             "name": {
@@ -1046,6 +1040,81 @@
                     "success",
                     "message",
                     "timestamp"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Record_string.string_": {
+                "properties": {},
+                "additionalProperties": {
+                    "type": "string"
+                },
+                "type": "object",
+                "description": "Construct a type with a set of properties K of type T"
+            },
+            "Record_string.any_": {
+                "properties": {},
+                "additionalProperties": {},
+                "type": "object",
+                "description": "Construct a type with a set of properties K of type T"
+            },
+            "ResolvedSystemConfig": {
+                "properties": {
+                    "siteName": {
+                        "type": "string"
+                    },
+                    "siteDescription": {
+                        "type": "string"
+                    },
+                    "logo": {
+                        "type": "string"
+                    },
+                    "logoDark": {
+                        "type": "string"
+                    },
+                    "favicon": {
+                        "type": "string"
+                    },
+                    "footerText": {
+                        "type": "string"
+                    },
+                    "theme": {
+                        "$ref": "#/components/schemas/Record_string.any_"
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Record_string.any_"
+                    }
+                },
+                "required": [
+                    "siteName",
+                    "siteDescription",
+                    "logo",
+                    "logoDark",
+                    "favicon",
+                    "footerText",
+                    "theme",
+                    "metadata"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "SystemBundle": {
+                "properties": {
+                    "languages": {
+                        "items": {},
+                        "type": "array"
+                    },
+                    "labels": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "config": {
+                        "$ref": "#/components/schemas/ResolvedSystemConfig"
+                    }
+                },
+                "required": [
+                    "languages",
+                    "labels",
+                    "config"
                 ],
                 "type": "object",
                 "additionalProperties": false
@@ -1477,6 +1546,186 @@
                 "type": "object",
                 "additionalProperties": false
             },
+            "ILanguage": {
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nativeName": {
+                        "type": "string"
+                    },
+                    "isAvailable": {
+                        "type": "boolean"
+                    },
+                    "isDefault": {
+                        "type": "boolean"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "code",
+                    "name",
+                    "nativeName",
+                    "isAvailable",
+                    "isDefault",
+                    "isActive"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Language": {
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nativeName": {
+                        "type": "string"
+                    },
+                    "isAvailable": {
+                        "type": "boolean"
+                    },
+                    "isDefault": {
+                        "type": "boolean"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "code",
+                    "name",
+                    "nativeName",
+                    "isAvailable",
+                    "isDefault",
+                    "isActive"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Partial_Language_": {
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nativeName": {
+                        "type": "string"
+                    },
+                    "isAvailable": {
+                        "type": "boolean"
+                    },
+                    "isDefault": {
+                        "type": "boolean"
+                    },
+                    "isActive": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object",
+                "description": "Make all properties in T optional"
+            },
+            "ILabel": {
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "translations": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "key",
+                    "translations"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Label": {
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "translations": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    }
+                },
+                "required": [
+                    "key",
+                    "translations"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "BatchLabelRequest": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/Label"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "items"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Partial_Label_": {
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "translations": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    }
+                },
+                "type": "object",
+                "description": "Make all properties in T optional"
+            },
+            "BatchLabelUpsertRequest": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "properties": {
+                                "translations": {
+                                    "$ref": "#/components/schemas/Record_string.string_"
+                                },
+                                "key": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "translations",
+                                "key"
+                            ],
+                            "type": "object"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "items"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
             "ICustomField": {
                 "properties": {
                     "targetCollection": {
@@ -1647,10 +1896,86 @@
                 "type": "object",
                 "additionalProperties": false
             },
+            "ISystemConfig": {
+                "properties": {
+                    "siteName": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "siteDescription": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "logo": {
+                        "type": "string"
+                    },
+                    "logoDark": {
+                        "type": "string"
+                    },
+                    "favicon": {
+                        "type": "string"
+                    },
+                    "footerText": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "theme": {
+                        "$ref": "#/components/schemas/Record_string.any_"
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Record_string.any_"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "siteName",
+                    "siteDescription",
+                    "logo",
+                    "logoDark",
+                    "favicon",
+                    "footerText",
+                    "theme",
+                    "metadata"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Partial_SystemConfig_": {
+                "properties": {
+                    "siteName": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "siteDescription": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "logo": {
+                        "type": "string"
+                    },
+                    "logoDark": {
+                        "type": "string"
+                    },
+                    "favicon": {
+                        "type": "string"
+                    },
+                    "footerText": {
+                        "$ref": "#/components/schemas/Record_string.string_"
+                    },
+                    "theme": {
+                        "$ref": "#/components/schemas/Record_string.any_"
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Record_string.any_"
+                    }
+                },
+                "type": "object",
+                "description": "Make all properties in T optional"
+            },
             "IAccessLevel": {
                 "properties": {
-                    "name": {
+                    "key": {
                         "type": "string"
+                    },
+                    "name": {
+                        "$ref": "#/components/schemas/Record_string.string_"
                     },
                     "level": {
                         "type": "number",
@@ -1673,6 +1998,7 @@
                     }
                 },
                 "required": [
+                    "key",
                     "name",
                     "level",
                     "scope"
@@ -1682,8 +2008,11 @@
             },
             "AccessLevel": {
                 "properties": {
-                    "name": {
+                    "key": {
                         "type": "string"
+                    },
+                    "name": {
+                        "$ref": "#/components/schemas/Record_string.string_"
                     },
                     "level": {
                         "type": "number",
@@ -1703,6 +2032,7 @@
                     }
                 },
                 "required": [
+                    "key",
                     "name",
                     "level",
                     "scope"
@@ -1712,8 +2042,11 @@
             },
             "Partial_AccessLevel_": {
                 "properties": {
-                    "name": {
+                    "key": {
                         "type": "string"
+                    },
+                    "name": {
+                        "$ref": "#/components/schemas/Record_string.string_"
                     },
                     "level": {
                         "type": "number",
@@ -1776,7 +2109,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -1829,7 +2162,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -1884,7 +2217,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -1930,7 +2263,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -1959,7 +2292,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -2005,7 +2338,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -2052,7 +2385,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -2106,7 +2439,7 @@
                     }
                 },
                 "tags": [
-                    "Storage Information"
+                    "Monitoring - Storage"
                 ],
                 "security": [
                     {
@@ -2163,7 +2496,7 @@
                     }
                 },
                 "tags": [
-                    "Network Information"
+                    "Monitoring - Network"
                 ],
                 "security": [
                     {
@@ -2216,7 +2549,7 @@
                     }
                 },
                 "tags": [
-                    "Network Information"
+                    "Monitoring - Network"
                 ],
                 "security": [
                     {
@@ -2272,7 +2605,7 @@
                     }
                 },
                 "tags": [
-                    "Network Information"
+                    "Monitoring - Network"
                 ],
                 "security": [
                     {
@@ -2319,7 +2652,7 @@
                     }
                 },
                 "tags": [
-                    "Network Information"
+                    "Monitoring - Network"
                 ],
                 "security": [
                     {
@@ -2363,7 +2696,7 @@
                     }
                 },
                 "tags": [
-                    "Network Information"
+                    "Monitoring - Network"
                 ],
                 "security": [
                     {
@@ -2560,7 +2893,7 @@
                     }
                 },
                 "tags": [
-                    "Memory Information"
+                    "Monitoring - Memory"
                 ],
                 "security": [
                     {
@@ -2613,7 +2946,7 @@
                     }
                 },
                 "tags": [
-                    "Memory Information"
+                    "Monitoring - Memory"
                 ],
                 "security": [
                     {
@@ -2669,7 +3002,7 @@
                     }
                 },
                 "tags": [
-                    "Memory Information"
+                    "Monitoring - Memory"
                 ],
                 "security": [
                     {
@@ -2716,7 +3049,7 @@
                     }
                 },
                 "tags": [
-                    "Memory Information"
+                    "Monitoring - Memory"
                 ],
                 "security": [
                     {
@@ -2760,7 +3093,7 @@
                     }
                 },
                 "tags": [
-                    "Memory Information"
+                    "Monitoring - Memory"
                 ],
                 "security": [
                     {
@@ -2802,7 +3135,7 @@
                 },
                 "description": "Get all CPU information for a machine",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -2856,7 +3189,7 @@
                 },
                 "description": "Create single CPU information record",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -2912,7 +3245,7 @@
                 },
                 "description": "Delete all CPU information for a machine",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -2959,7 +3292,7 @@
                 },
                 "description": "Get CPU information by ID",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -2989,7 +3322,7 @@
                 },
                 "description": "Delete CPU information by ID",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -3036,7 +3369,7 @@
                 },
                 "description": "Get latest CPU information for a machine",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -3084,7 +3417,7 @@
                 },
                 "description": "Create multiple CPU information records (batch)",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -3139,7 +3472,7 @@
                 },
                 "description": "Get CPU information by date range",
                 "tags": [
-                    "CPU Information"
+                    "Monitoring - CPU"
                 ],
                 "security": [
                     {
@@ -3196,7 +3529,7 @@
                     }
                 },
                 "tags": [
-                    "Antivirus Information"
+                    "Monitoring - Antivirus"
                 ],
                 "security": [
                     {
@@ -3249,7 +3582,7 @@
                     }
                 },
                 "tags": [
-                    "Antivirus Information"
+                    "Monitoring - Antivirus"
                 ],
                 "security": [
                     {
@@ -3305,7 +3638,7 @@
                     }
                 },
                 "tags": [
-                    "Antivirus Information"
+                    "Monitoring - Antivirus"
                 ],
                 "security": [
                     {
@@ -3352,7 +3685,7 @@
                     }
                 },
                 "tags": [
-                    "Antivirus Information"
+                    "Monitoring - Antivirus"
                 ],
                 "security": [
                     {
@@ -3396,7 +3729,7 @@
                     }
                 },
                 "tags": [
-                    "Antivirus Information"
+                    "Monitoring - Antivirus"
                 ],
                 "security": [
                     {
@@ -3437,7 +3770,7 @@
                     }
                 },
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "security": [
                     {
@@ -3477,7 +3810,7 @@
                     }
                 },
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "security": [
                     {
@@ -3526,7 +3859,7 @@
                     }
                 },
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "security": [
                     {
@@ -3560,7 +3893,7 @@
                     }
                 },
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "security": [
                     {
@@ -3601,7 +3934,7 @@
                     }
                 },
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "security": [
                     {
@@ -3645,7 +3978,7 @@
                 },
                 "description": "User login - Generate JWT tokens",
                 "tags": [
-                    "Authentication"
+                    "Auth"
                 ],
                 "security": [],
                 "parameters": [],
@@ -3684,7 +4017,7 @@
                 },
                 "description": "User registration - Create new user and generate tokens",
                 "tags": [
-                    "Authentication"
+                    "Auth"
                 ],
                 "security": [],
                 "parameters": [],
@@ -3735,7 +4068,7 @@
                 },
                 "description": "Refresh access token using refresh token",
                 "tags": [
-                    "Authentication"
+                    "Auth"
                 ],
                 "security": [],
                 "parameters": [],
@@ -3768,7 +4101,7 @@
                 },
                 "description": "Public endpoint - No authentication required\r\nUse this to test if the API is working",
                 "tags": [
-                    "Test Endpoints"
+                    "Dev - Test"
                 ],
                 "security": [],
                 "parameters": []
@@ -3794,7 +4127,7 @@
                 },
                 "description": "Protected endpoint - Requires valid JWT token\r\nSend token in Authorization header: \"Bearer <your-token>\"",
                 "tags": [
-                    "Test Endpoints"
+                    "Dev - Test"
                 ],
                 "security": [
                     {
@@ -3825,9 +4158,9 @@
                         "description": "Forbidden - Insufficient permissions"
                     }
                 },
-                "description": "Admin only endpoint - Requires valid JWT token with admin role\r\nSend token in Authorization header: \"Bearer <your-token>\"\r\nUser must have role: \"admin\"",
+                "description": "Admin only endpoint - Requires admin access level or higher\r\nSend token via X-Token header",
                 "tags": [
-                    "Test Endpoints"
+                    "Dev - Test"
                 ],
                 "security": [
                     {
@@ -3860,9 +4193,9 @@
                         "description": "Forbidden - Insufficient permissions"
                     }
                 },
-                "description": "Moderator or Admin endpoint - Requires valid JWT token with moderator or admin role\r\nSend token in Authorization header: \"Bearer <your-token>\"\r\nUser must have role: \"moderator\" or \"admin\"",
+                "description": "Moderator or Admin endpoint - Requires moderator or admin access level\r\nSend token via X-Token header",
                 "tags": [
-                    "Test Endpoints"
+                    "Dev - Test"
                 ],
                 "security": [
                     {
@@ -3901,7 +4234,7 @@
                                                     "type": "number",
                                                     "format": "double"
                                                 },
-                                                "role": {
+                                                "accessLevelName": {
                                                     "type": "string"
                                                 },
                                                 "name": {
@@ -3944,7 +4277,7 @@
                 },
                 "description": "Validate token endpoint - Returns token information if valid\r\nSend token in Authorization header: \"Bearer <your-token>\"",
                 "tags": [
-                    "Test Endpoints"
+                    "Dev - Test"
                 ],
                 "security": [
                     {
@@ -3952,6 +4285,42 @@
                     }
                 ],
                 "parameters": []
+            }
+        },
+        "/system": {
+            "get": {
+                "operationId": "GetSystemBundle",
+                "responses": {
+                    "200": {
+                        "description": "System Bundle",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SystemBundle"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "description": "Get system bundle - languages, labels, and config resolved to the requested language.",
+                "tags": [
+                    "System"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "Language code (e.g., \"en-US\", \"pt-BR\"). Defaults to \"en-US\".",
+                        "in": "query",
+                        "name": "lang",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
             }
         },
         "/subscriptions": {
@@ -3976,7 +4345,7 @@
                     }
                 },
                 "tags": [
-                    "Subscription"
+                    "Admin - Subscriptions"
                 ],
                 "security": [
                     {
@@ -4013,7 +4382,7 @@
                     }
                 },
                 "tags": [
-                    "Subscription"
+                    "Admin - Subscriptions"
                 ],
                 "security": [
                     {
@@ -4057,7 +4426,7 @@
                     }
                 },
                 "tags": [
-                    "Subscription"
+                    "Admin - Subscriptions"
                 ],
                 "security": [
                     {
@@ -4103,7 +4472,7 @@
                     }
                 },
                 "tags": [
-                    "Subscription"
+                    "Admin - Subscriptions"
                 ],
                 "security": [
                     {
@@ -4132,7 +4501,7 @@
                     }
                 },
                 "tags": [
-                    "Subscription"
+                    "Admin - Subscriptions"
                 ],
                 "security": [
                     {
@@ -4173,7 +4542,7 @@
                     }
                 },
                 "tags": [
-                    "Subscription"
+                    "Admin - Subscriptions"
                 ],
                 "security": [
                     {
@@ -4224,7 +4593,7 @@
                     }
                 },
                 "tags": [
-                    "Subscription"
+                    "Admin - Subscriptions"
                 ],
                 "security": [
                     {
@@ -4273,7 +4642,7 @@
                     }
                 },
                 "tags": [
-                    "Plan"
+                    "Admin - Plans"
                 ],
                 "security": [
                     {
@@ -4313,7 +4682,7 @@
                     }
                 },
                 "tags": [
-                    "Plan"
+                    "Admin - Plans"
                 ],
                 "security": [
                     {
@@ -4362,7 +4731,7 @@
                     }
                 },
                 "tags": [
-                    "Plan"
+                    "Admin - Plans"
                 ],
                 "security": [
                     {
@@ -4393,7 +4762,7 @@
                     }
                 },
                 "tags": [
-                    "Plan"
+                    "Admin - Plans"
                 ],
                 "security": [
                     {
@@ -4434,7 +4803,7 @@
                     }
                 },
                 "tags": [
-                    "Plan"
+                    "Admin - Plans"
                 ],
                 "security": [
                     {
@@ -4477,7 +4846,7 @@
                     }
                 },
                 "tags": [
-                    "Organization"
+                    "Admin - Organizations"
                 ],
                 "security": [
                     {
@@ -4515,7 +4884,7 @@
                     }
                 },
                 "tags": [
-                    "Organization"
+                    "Admin - Organizations"
                 ],
                 "security": [
                     {
@@ -4564,7 +4933,7 @@
                     }
                 },
                 "tags": [
-                    "Organization"
+                    "Admin - Organizations"
                 ],
                 "security": [
                     {
@@ -4593,7 +4962,7 @@
                     }
                 },
                 "tags": [
-                    "Organization"
+                    "Admin - Organizations"
                 ],
                 "security": [
                     {
@@ -4637,7 +5006,7 @@
                     }
                 },
                 "tags": [
-                    "Organization"
+                    "Admin - Organizations"
                 ],
                 "security": [
                     {
@@ -4680,7 +5049,7 @@
                     }
                 },
                 "tags": [
-                    "Organization"
+                    "Admin - Organizations"
                 ],
                 "security": [
                     {
@@ -4722,7 +5091,7 @@
                 },
                 "description": "Get all registered machines (scoped to user's organization)",
                 "tags": [
-                    "Machine"
+                    "Machines"
                 ],
                 "security": [
                     {
@@ -4761,7 +5130,7 @@
                 },
                 "description": "Register a new machine",
                 "tags": [
-                    "Machine"
+                    "Machines"
                 ],
                 "security": [
                     {
@@ -4809,7 +5178,7 @@
                 },
                 "description": "Get a specific machine by database ID",
                 "tags": [
-                    "Machine"
+                    "Machines"
                 ],
                 "security": [
                     {
@@ -4842,7 +5211,7 @@
                 },
                 "description": "Update a machine",
                 "tags": [
-                    "Machine"
+                    "Machines"
                 ],
                 "security": [
                     {
@@ -4882,7 +5251,7 @@
                 },
                 "description": "Delete a machine",
                 "tags": [
-                    "Machine"
+                    "Machines"
                 ],
                 "security": [
                     {
@@ -4929,7 +5298,7 @@
                 },
                 "description": "Get a machine by machineId (client-generated ID)",
                 "tags": [
-                    "Machine"
+                    "Machines"
                 ],
                 "security": [
                     {
@@ -4946,6 +5315,512 @@
                         }
                     }
                 ]
+            }
+        },
+        "/languages": {
+            "get": {
+                "operationId": "GetAll",
+                "responses": {
+                    "200": {
+                        "description": "List",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/ILanguage"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Languages"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": []
+            },
+            "post": {
+                "operationId": "Create",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "id"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Languages"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Language"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/languages/{id}": {
+            "get": {
+                "operationId": "GetById",
+                "responses": {
+                    "200": {
+                        "description": "Language",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ILanguage"
+                                        }
+                                    ],
+                                    "nullable": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Languages"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "Update",
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Languages"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Partial_Language_"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "Delete",
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Languages"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/labels": {
+            "get": {
+                "operationId": "GetAll",
+                "responses": {
+                    "200": {
+                        "description": "List",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/ILabel"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Labels"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": []
+            },
+            "post": {
+                "operationId": "Create",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "id"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Labels"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Label"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/labels/{id}": {
+            "get": {
+                "operationId": "GetById",
+                "responses": {
+                    "200": {
+                        "description": "Label",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ILabel"
+                                        }
+                                    ],
+                                    "nullable": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Labels"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "Update",
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Labels"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Partial_Label_"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "Delete",
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Labels"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/labels/batch": {
+            "post": {
+                "operationId": "CreateBatch",
+                "responses": {
+                    "201": {
+                        "description": "Batch Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "count": {
+                                            "type": "number",
+                                            "format": "double"
+                                        }
+                                    },
+                                    "required": [
+                                        "count"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Labels"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchLabelRequest"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "UpsertBatch",
+                "responses": {
+                    "200": {
+                        "description": "Batch Upserted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "count": {
+                                            "type": "number",
+                                            "format": "double"
+                                        }
+                                    },
+                                    "required": [
+                                        "count"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Labels"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchLabelUpsertRequest"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/custom-fields": {
@@ -4970,7 +5845,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5019,7 +5894,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5068,7 +5943,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5097,7 +5972,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5138,7 +6013,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5181,7 +6056,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5230,7 +6105,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5284,7 +6159,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5332,7 +6207,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5367,7 +6242,7 @@
                     }
                 },
                 "tags": [
-                    "Custom Field"
+                    "Admin - Custom Fields"
                 ],
                 "security": [
                     {
@@ -5384,6 +6259,81 @@
                         }
                     }
                 ]
+            }
+        },
+        "/config": {
+            "get": {
+                "operationId": "Get",
+                "responses": {
+                    "200": {
+                        "description": "Config",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ISystemConfig"
+                                        }
+                                    ],
+                                    "nullable": true
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Config"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": []
+            },
+            "put": {
+                "operationId": "Upsert",
+                "responses": {
+                    "200": {
+                        "description": "Updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ISystemConfig"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "System - Config"
+                ],
+                "security": [
+                    {
+                        "jwt": [
+                            "master"
+                        ]
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Partial_SystemConfig_"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/access-levels": {
@@ -5408,7 +6358,7 @@
                     }
                 },
                 "tags": [
-                    "Access Level"
+                    "Admin - Access Levels"
                 ],
                 "security": [
                     {
@@ -5448,7 +6398,7 @@
                     }
                 },
                 "tags": [
-                    "Access Level"
+                    "Admin - Access Levels"
                 ],
                 "security": [
                     {
@@ -5497,7 +6447,7 @@
                     }
                 },
                 "tags": [
-                    "Access Level"
+                    "Admin - Access Levels"
                 ],
                 "security": [
                     {
@@ -5528,7 +6478,7 @@
                     }
                 },
                 "tags": [
-                    "Access Level"
+                    "Admin - Access Levels"
                 ],
                 "security": [
                     {
@@ -5572,7 +6522,7 @@
                     }
                 },
                 "tags": [
-                    "Access Level"
+                    "Admin - Access Levels"
                 ],
                 "security": [
                     {
@@ -5597,6 +6547,84 @@
     "servers": [
         {
             "url": "/api/v1"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authentication endpoints (login, register, refresh)"
+        },
+        {
+            "name": "Users",
+            "description": "User management"
+        },
+        {
+            "name": "Admin - Access Levels",
+            "description": "Access level management (master only)"
+        },
+        {
+            "name": "Admin - Organizations",
+            "description": "Organization management"
+        },
+        {
+            "name": "Admin - Plans",
+            "description": "Subscription plan management"
+        },
+        {
+            "name": "Admin - Subscriptions",
+            "description": "Subscription management"
+        },
+        {
+            "name": "Admin - Custom Fields",
+            "description": "Custom field definitions"
+        },
+        {
+            "name": "Machines",
+            "description": "Machine management"
+        },
+        {
+            "name": "System",
+            "description": "System bundle (languages + labels + config)"
+        },
+        {
+            "name": "System - Languages",
+            "description": "Language management (master only)"
+        },
+        {
+            "name": "System - Labels",
+            "description": "Translation label management (master only)"
+        },
+        {
+            "name": "System - Config",
+            "description": "Site configuration (master only)"
+        },
+        {
+            "name": "Monitoring",
+            "description": "Machine monitoring data"
+        },
+        {
+            "name": "Monitoring - CPU",
+            "description": "CPU information data"
+        },
+        {
+            "name": "Monitoring - Memory",
+            "description": "Memory information data"
+        },
+        {
+            "name": "Monitoring - Storage",
+            "description": "Storage information data"
+        },
+        {
+            "name": "Monitoring - Network",
+            "description": "Network information data"
+        },
+        {
+            "name": "Monitoring - Antivirus",
+            "description": "Antivirus information data"
+        },
+        {
+            "name": "Dev - Test",
+            "description": "Development test endpoints"
         }
     ]
 }

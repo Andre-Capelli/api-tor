@@ -159,6 +159,6 @@ __decorate([
 ], OrganizationController.prototype, "delete", null);
 exports.OrganizationController = OrganizationController = __decorate([
     (0, tsoa_1.Route)("organizations"),
-    (0, tsoa_1.Tags)("Organization"),
+    (0, tsoa_1.Tags)("Admin - Organizations"),
     (0, tsoa_1.Security)("jwt")
 ], OrganizationController);

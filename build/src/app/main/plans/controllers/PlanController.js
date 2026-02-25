@@ -132,6 +132,6 @@ __decorate([
 ], PlanController.prototype, "delete", null);
 exports.PlanController = PlanController = __decorate([
     (0, tsoa_1.Route)("plans"),
-    (0, tsoa_1.Tags)("Plan"),
+    (0, tsoa_1.Tags)("Admin - Plans"),
     (0, tsoa_1.Security)("jwt", ["master"])
 ], PlanController);

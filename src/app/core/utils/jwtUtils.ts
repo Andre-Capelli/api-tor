@@ -1,5 +1,7 @@
 import jwt, { SignOptions } from "jsonwebtoken";
+import crypto from "crypto";
 import { Request } from "express";
+import BlacklistedTokenDB from "../models/BlacklistedToken";
 
 // JWT Secret - should be in environment variables
 const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-this-in-production";
@@ -13,12 +15,12 @@ export interface JwtPayload {
   id: string;
   email: string;
   name: string;
-  role?: string;
   organizationId?: string;
   organizationType?: string;
   accessLevelName?: string;
   accessLevel?: number;
   accessLevelScope?: string;
+  jti?: string;
   iat?: number;
   exp?: number;
 }
@@ -26,8 +28,9 @@ export interface JwtPayload {
 /**
  * Generate access token (short-lived)
  */
-export const generateAccessToken = (payload: Omit<JwtPayload, "iat" | "exp">): string => {
-  return jwt.sign(payload, JWT_SECRET, {
+export const generateAccessToken = (payload: Omit<JwtPayload, "iat" | "exp" | "jti">): string => {
+  const jti = crypto.randomUUID();
+  return jwt.sign({ ...payload, jti }, JWT_SECRET, {
     expiresIn: ACCESS_TOKEN_EXPIRY,
     issuer: "api-tor",
     audience: "api-tor-users",
@@ -120,6 +123,14 @@ export const decodeToken = (token: string): JwtPayload | null => {
 /**
  * Check if token is expired without throwing error
  */
+/**
+ * Check if a token's jti has been blacklisted
+ */
+export const isTokenBlacklisted = async (jti: string): Promise<boolean> => {
+  const entry = await BlacklistedTokenDB.findOne({ jti });
+  return !!entry;
+};
+
 export const isTokenExpired = (token: string): boolean => {
   try {
     const decoded = jwt.decode(token) as JwtPayload;

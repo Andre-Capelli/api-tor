@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const config_1 = require("../../../app/configs/mongodb/config");
 const core_1 = require("../../../app/core");
 // CPU Core Schema
 const CpuCoreSchema = new mongoose_1.Schema({
@@ -55,5 +56,5 @@ const CpuInformationSchema = new mongoose_1.Schema({
 CpuInformationSchema.add(core_1.ModificationSchema);
 // Compound index for efficient queries
 CpuInformationSchema.index({ machineId: 1, timestamp: -1 });
-const CpuInformationDB = (0, mongoose_1.model)("CpuInformation", CpuInformationSchema);
+const CpuInformationDB = config_1.modConnection.model("CpuInformation", CpuInformationSchema);
 exports.default = CpuInformationDB;

@@ -1,4 +1,5 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, Document } from "mongoose";
+import { modConnection } from "../../../app/configs/mongodb/config";
 import { ModificationSchema, IModification } from "../../../app/core";
 
 // Network Information interface
@@ -74,6 +75,6 @@ NetworkInformationSchema.add(ModificationSchema);
 // Compound index for efficient queries
 NetworkInformationSchema.index({ machineId: 1, timestamp: -1 });
 
-const NetworkInformationDB = model<INetworkInformationDB>("NetworkInformation", NetworkInformationSchema);
+const NetworkInformationDB = modConnection.model<INetworkInformationDB>("NetworkInformation", NetworkInformationSchema);
 
 export default NetworkInformationDB;

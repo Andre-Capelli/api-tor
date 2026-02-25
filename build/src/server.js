@@ -12,6 +12,9 @@ const port = process.env.NODE_PORT || 7500;
     try {
         await (0, config_1.default)();
         await (0, seeds_1.seedAccessLevels)();
+        await (0, seeds_1.seedLanguages)();
+        await (0, seeds_1.seedSystemConfig)();
+        await (0, seeds_1.seedUsers)();
         app_1.app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
     }
     catch (err) {

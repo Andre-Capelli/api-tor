@@ -16,7 +16,7 @@ import { IPlan, Plan } from "../Plan";
 import { PlanService } from "../services/PlanService";
 
 @Route("plans")
-@Tags("Plan")
+@Tags("Admin - Plans")
 @Security("jwt", ["master"])
 export class PlanController extends Controller {
   @SuccessResponse("200", "List")

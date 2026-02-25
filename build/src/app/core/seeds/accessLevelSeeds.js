@@ -7,7 +7,8 @@ exports.seedAccessLevels = seedAccessLevels;
 const AccessLevel_1 = __importDefault(require("@main/access-levels/AccessLevel"));
 const DEFAULT_ACCESS_LEVELS = [
     {
-        name: "master",
+        key: "master",
+        name: { "en-US": "Master", "pt-BR": "Mestre" },
         level: 100,
         scope: "platform",
         description: "Platform developer - full access to all organizations and data",
@@ -15,7 +16,8 @@ const DEFAULT_ACCESS_LEVELS = [
         isActive: true,
     },
     {
-        name: "admin",
+        key: "admin",
+        name: { "en-US": "Administrator", "pt-BR": "Administrador" },
         level: 50,
         scope: "company",
         description: "Organization administrator - manages their company and customers",
@@ -23,7 +25,8 @@ const DEFAULT_ACCESS_LEVELS = [
         isActive: true,
     },
     {
-        name: "user",
+        key: "user",
+        name: { "en-US": "User", "pt-BR": "Utilizador" },
         level: 40,
         scope: "company",
         description: "Standard user - view and limited edit within their organization",
@@ -33,10 +36,10 @@ const DEFAULT_ACCESS_LEVELS = [
 ];
 async function seedAccessLevels() {
     for (const level of DEFAULT_ACCESS_LEVELS) {
-        const existing = await AccessLevel_1.default.findOne({ name: level.name });
+        const existing = await AccessLevel_1.default.findOne({ key: level.key });
         if (!existing) {
             await AccessLevel_1.default.create(level);
-            console.log(`Seeded access level: ${level.name} (level: ${level.level})`);
+            console.log(`Seeded access level: ${level.key} (level: ${level.level})`);
         }
     }
 }

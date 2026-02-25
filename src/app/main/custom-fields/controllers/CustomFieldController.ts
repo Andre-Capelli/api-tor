@@ -18,7 +18,7 @@ import { ICustomFieldValue, CustomFieldValue } from "../CustomFieldValue";
 import { CustomFieldService } from "../services/CustomFieldService";
 
 @Route("custom-fields")
-@Tags("Custom Field")
+@Tags("Admin - Custom Fields")
 @Security("jwt")
 export class CustomFieldController extends Controller {
   @Security("jwt", ["admin"])

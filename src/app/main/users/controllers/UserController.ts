@@ -19,7 +19,7 @@ import { buildOrgScopeFilter } from "@core/utils/scopeUtils";
 import { AuthenticatedRequest } from "@core/middlewares/authHandler";
 
 @Route("users")
-@Tags("User")
+@Tags("Users")
 @Security("jwt", ["admin"])
 export class UserController extends Controller {
   @SuccessResponse("200", "List")

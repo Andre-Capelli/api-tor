@@ -21,6 +21,7 @@ const User_1 = __importDefault(require("../User"));
 const AccessLevel_1 = __importDefault(require("@main/access-levels/AccessLevel"));
 const Organization_1 = __importDefault(require("@main/organizations/Organization"));
 const jwtUtils_1 = require("@core/utils/jwtUtils");
+const BlacklistedToken_1 = __importDefault(require("@core/models/BlacklistedToken"));
 /**
  * Builds the enriched JWT payload from user + access level + organization data.
  */
@@ -29,23 +30,12 @@ async function buildTokenPayload(user) {
         id: String(user._id),
         email: user.email,
         name: user.name,
-        role: user.role || "user",
     };
     // Populate access level data
     if (user.accessLevelId) {
         const accessLevel = await AccessLevel_1.default.findById(user.accessLevelId);
         if (accessLevel) {
-            payload.accessLevelName = accessLevel.name;
-            payload.accessLevel = accessLevel.level;
-            payload.accessLevelScope = accessLevel.scope;
-            payload.role = accessLevel.name;
-        }
-    }
-    else if (user.role) {
-        // Backward compat: map old role string to access level
-        const accessLevel = await AccessLevel_1.default.findOne({ name: user.role });
-        if (accessLevel) {
-            payload.accessLevelName = accessLevel.name;
+            payload.accessLevelName = accessLevel.key;
             payload.accessLevel = accessLevel.level;
             payload.accessLevelScope = accessLevel.scope;
         }
@@ -90,11 +80,10 @@ let AuthController = class AuthController extends tsoa_1.Controller {
                     id: String(user._id),
                     name: user.name,
                     email: user.email,
-                    role: tokenPayload.role || "user",
-                    organizationId: tokenPayload.organizationId,
-                    organizationType: tokenPayload.organizationType,
                     accessLevelName: tokenPayload.accessLevelName,
                     accessLevel: tokenPayload.accessLevel,
+                    organizationId: tokenPayload.organizationId,
+                    organizationType: tokenPayload.organizationType,
                 },
             };
         }
@@ -119,12 +108,11 @@ let AuthController = class AuthController extends tsoa_1.Controller {
                 throw new Error("User with this email already exists");
             }
             // Default to "user" access level
-            const defaultAccessLevel = await AccessLevel_1.default.findOne({ name: "user" });
+            const defaultAccessLevel = await AccessLevel_1.default.findOne({ key: "user" });
             const user = await User_1.default.create({
                 name,
                 email,
                 password,
-                role: "user",
                 isActive: true,
                 organizationId: organizationId || null,
                 accessLevelId: defaultAccessLevel ? String(defaultAccessLevel._id) : null,
@@ -138,11 +126,10 @@ let AuthController = class AuthController extends tsoa_1.Controller {
                     id: String(user._id),
                     name: user.name,
                     email: user.email,
-                    role: tokenPayload.role || "user",
-                    organizationId: tokenPayload.organizationId,
-                    organizationType: tokenPayload.organizationType,
                     accessLevelName: tokenPayload.accessLevelName,
                     accessLevel: tokenPayload.accessLevel,
+                    organizationId: tokenPayload.organizationId,
+                    organizationType: tokenPayload.organizationType,
                 },
             };
         }
@@ -164,10 +151,20 @@ let AuthController = class AuthController extends tsoa_1.Controller {
      */
     async refreshToken(body) {
         try {
-            const { refreshToken } = body;
+            const { refreshToken, accessToken } = body;
             if (!refreshToken) {
                 this.setStatus(401);
                 throw new Error("Refresh token is required");
+            }
+            // Blacklist the old access token
+            if (accessToken) {
+                const oldTokenData = (0, jwtUtils_1.decodeToken)(accessToken);
+                if (oldTokenData?.jti && oldTokenData?.exp) {
+                    await BlacklistedToken_1.default.create({
+                        jti: oldTokenData.jti,
+                        expiresAt: new Date(oldTokenData.exp * 1000),
+                    }).catch(() => { }); // Ignore duplicate jti errors
+                }
             }
             const decoded = (0, jwtUtils_1.verifyRefreshToken)(refreshToken);
             const user = await User_1.default.findById(decoded.id);
@@ -226,5 +223,5 @@ __decorate([
 ], AuthController.prototype, "refreshToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, tsoa_1.Route)("auth"),
-    (0, tsoa_1.Tags)("Authentication")
+    (0, tsoa_1.Tags)("Auth")
 ], AuthController);

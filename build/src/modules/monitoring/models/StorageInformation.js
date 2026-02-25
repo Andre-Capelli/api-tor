@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const config_1 = require("../../../app/configs/mongodb/config");
 const core_1 = require("../../../app/core");
 // Disk Schema
 const DiskSchema = new mongoose_1.Schema({
@@ -118,5 +119,5 @@ const StorageInformationSchema = new mongoose_1.Schema({
 StorageInformationSchema.add(core_1.ModificationSchema);
 // Compound index for efficient queries
 StorageInformationSchema.index({ machineId: 1, timestamp: -1 });
-const StorageInformationDB = (0, mongoose_1.model)("StorageInformation", StorageInformationSchema);
+const StorageInformationDB = config_1.modConnection.model("StorageInformation", StorageInformationSchema);
 exports.default = StorageInformationDB;

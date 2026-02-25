@@ -16,7 +16,7 @@ import { IOrganization, Organization } from "../Organization";
 import { OrganizationService } from "../services/OrganizationService";
 
 @Route("organizations")
-@Tags("Organization")
+@Tags("Admin - Organizations")
 @Security("jwt")
 export class OrganizationController extends Controller {
   @SuccessResponse("200", "List")

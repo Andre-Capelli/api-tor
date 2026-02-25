@@ -56,11 +56,6 @@ const UserSchema = new mongoose_1.Schema({
         required: true,
         select: false, // Don't include password in queries by default
     },
-    role: {
-        type: String,
-        enum: ["user", "admin", "moderator"],
-        default: "user",
-    },
     isActive: {
         type: Boolean,
         default: true,

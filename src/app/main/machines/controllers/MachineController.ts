@@ -19,7 +19,7 @@ import { buildOrgScopeFilter } from "@core/utils/scopeUtils";
 import { AuthenticatedRequest } from "@core/middlewares/authHandler";
 
 @Route("machines")
-@Tags("Machine")
+@Tags("Machines")
 @Security("jwt")
 export class MachineController extends Controller {
   /**

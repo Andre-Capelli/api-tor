@@ -137,6 +137,6 @@ __decorate([
 ], AccessLevelController.prototype, "delete", null);
 exports.AccessLevelController = AccessLevelController = __decorate([
     (0, tsoa_1.Route)("access-levels"),
-    (0, tsoa_1.Tags)("Access Level"),
+    (0, tsoa_1.Tags)("Admin - Access Levels"),
     (0, tsoa_1.Security)("jwt", ["master"])
 ], AccessLevelController);

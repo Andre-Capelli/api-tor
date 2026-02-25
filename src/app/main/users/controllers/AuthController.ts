@@ -13,8 +13,10 @@ import OrganizationDB from "@main/organizations/Organization";
 import {
   generateTokenPair,
   verifyRefreshToken,
+  decodeToken,
   JwtPayload,
 } from "@core/utils/jwtUtils";
+import BlacklistedTokenDB from "@core/models/BlacklistedToken";
 
 interface LoginRequest {
   email: string;
@@ -30,6 +32,7 @@ interface RegisterRequest {
 
 interface RefreshTokenRequest {
   refreshToken: string;
+  accessToken: string;
 }
 
 interface AuthResponse {
@@ -39,11 +42,10 @@ interface AuthResponse {
     id: string;
     name: string;
     email: string;
-    role: string;
-    organizationId?: string;
-    organizationType?: string;
     accessLevelName?: string;
     accessLevel?: number;
+    organizationId?: string;
+    organizationType?: string;
   };
 }
 
@@ -55,23 +57,13 @@ async function buildTokenPayload(user: any): Promise<Omit<JwtPayload, "iat" | "e
     id: String(user._id),
     email: user.email,
     name: user.name,
-    role: user.role || "user",
   };
 
   // Populate access level data
   if (user.accessLevelId) {
     const accessLevel = await AccessLevelDB.findById(user.accessLevelId);
     if (accessLevel) {
-      payload.accessLevelName = accessLevel.name;
-      payload.accessLevel = accessLevel.level;
-      payload.accessLevelScope = accessLevel.scope;
-      payload.role = accessLevel.name;
-    }
-  } else if (user.role) {
-    // Backward compat: map old role string to access level
-    const accessLevel = await AccessLevelDB.findOne({ name: user.role });
-    if (accessLevel) {
-      payload.accessLevelName = accessLevel.name;
+      payload.accessLevelName = accessLevel.key;
       payload.accessLevel = accessLevel.level;
       payload.accessLevelScope = accessLevel.scope;
     }
@@ -90,7 +82,7 @@ async function buildTokenPayload(user: any): Promise<Omit<JwtPayload, "iat" | "e
 }
 
 @Route("auth")
-@Tags("Authentication")
+@Tags("Auth")
 export class AuthController extends Controller {
   /**
    * User login - Generate JWT tokens
@@ -132,11 +124,10 @@ export class AuthController extends Controller {
           id: String(user._id),
           name: user.name,
           email: user.email,
-          role: tokenPayload.role || "user",
-          organizationId: tokenPayload.organizationId,
-          organizationType: tokenPayload.organizationType,
           accessLevelName: tokenPayload.accessLevelName,
           accessLevel: tokenPayload.accessLevel,
+          organizationId: tokenPayload.organizationId,
+          organizationType: tokenPayload.organizationType,
         },
       };
     } catch (error) {
@@ -168,13 +159,12 @@ export class AuthController extends Controller {
       }
 
       // Default to "user" access level
-      const defaultAccessLevel = await AccessLevelDB.findOne({ name: "user" });
+      const defaultAccessLevel = await AccessLevelDB.findOne({ key: "user" });
 
       const user = await UserDB.create({
         name,
         email,
         password,
-        role: "user",
         isActive: true,
         organizationId: organizationId || null,
         accessLevelId: defaultAccessLevel ? String(defaultAccessLevel._id) : null,
@@ -190,11 +180,10 @@ export class AuthController extends Controller {
           id: String(user._id),
           name: user.name,
           email: user.email,
-          role: tokenPayload.role || "user",
-          organizationId: tokenPayload.organizationId,
-          organizationType: tokenPayload.organizationType,
           accessLevelName: tokenPayload.accessLevelName,
           accessLevel: tokenPayload.accessLevel,
+          organizationId: tokenPayload.organizationId,
+          organizationType: tokenPayload.organizationType,
         },
       };
     } catch (error) {
@@ -222,11 +211,22 @@ export class AuthController extends Controller {
     @Body() body: RefreshTokenRequest
   ): Promise<{ accessToken: string; refreshToken: string }> {
     try {
-      const { refreshToken } = body;
+      const { refreshToken, accessToken } = body;
 
       if (!refreshToken) {
         this.setStatus(401);
         throw new Error("Refresh token is required");
+      }
+
+      // Blacklist the old access token
+      if (accessToken) {
+        const oldTokenData = decodeToken(accessToken);
+        if (oldTokenData?.jti && oldTokenData?.exp) {
+          await BlacklistedTokenDB.create({
+            jti: oldTokenData.jti,
+            expiresAt: new Date(oldTokenData.exp * 1000),
+          }).catch(() => {}); // Ignore duplicate jti errors
+        }
       }
 
       const decoded = verifyRefreshToken(refreshToken);

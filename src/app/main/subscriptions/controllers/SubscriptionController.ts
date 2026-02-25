@@ -17,7 +17,7 @@ import { SubscriptionService } from "../services/SubscriptionService";
 import { ModuleType } from "../../plans/Plan";
 
 @Route("subscriptions")
-@Tags("Subscription")
+@Tags("Admin - Subscriptions")
 @Security("jwt")
 export class SubscriptionController extends Controller {
   @Security("jwt", ["master"])

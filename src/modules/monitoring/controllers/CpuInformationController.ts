@@ -16,7 +16,7 @@ import { CpuInformation, ICpuInformation } from "../models/CpuInformation";
 import { CpuInformationService } from "../services/CpuInformationService";
 
 @Route("monitoring/cpu-information")
-@Tags("CPU Information")
+@Tags("Monitoring - CPU")
 @Security("jwt")
 export class CpuInformationController extends Controller {
   /**

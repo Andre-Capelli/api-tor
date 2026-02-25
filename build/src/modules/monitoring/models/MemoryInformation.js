@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const config_1 = require("../../../app/configs/mongodb/config");
 const core_1 = require("../../../app/core");
 // Memory Information Schema
 const MemoryInformationSchema = new mongoose_1.Schema({
@@ -36,5 +37,5 @@ const MemoryInformationSchema = new mongoose_1.Schema({
 MemoryInformationSchema.add(core_1.ModificationSchema);
 // Compound index for efficient queries
 MemoryInformationSchema.index({ machineId: 1, timestamp: -1 });
-const MemoryInformationDB = (0, mongoose_1.model)("MemoryInformation", MemoryInformationSchema);
+const MemoryInformationDB = config_1.modConnection.model("MemoryInformation", MemoryInformationSchema);
 exports.default = MemoryInformationDB;

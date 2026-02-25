@@ -130,6 +130,6 @@ __decorate([
 ], AntivirusInformationController.prototype, "deleteAntivirusInformation", null);
 exports.AntivirusInformationController = AntivirusInformationController = __decorate([
     (0, tsoa_1.Route)("monitoring/antivirus-information"),
-    (0, tsoa_1.Tags)("Antivirus Information"),
+    (0, tsoa_1.Tags)("Monitoring - Antivirus"),
     (0, tsoa_1.Security)("jwt")
 ], AntivirusInformationController);

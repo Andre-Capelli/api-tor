@@ -42,15 +42,14 @@ let TestController = class TestController extends tsoa_1.Controller {
                 id: req.user.id,
                 email: req.user.email,
                 name: req.user.name,
-                role: req.user.role,
+                accessLevelName: req.user.accessLevelName,
             } : undefined,
             timestamp: new Date().toISOString(),
         };
     }
     /**
-     * Admin only endpoint - Requires valid JWT token with admin role
-     * Send token in Authorization header: "Bearer <your-token>"
-     * User must have role: "admin"
+     * Admin only endpoint - Requires admin access level or higher
+     * Send token via X-Token header
      */
     async adminEndpoint(req) {
         this.setStatus(200);
@@ -61,15 +60,14 @@ let TestController = class TestController extends tsoa_1.Controller {
                 id: req.user.id,
                 email: req.user.email,
                 name: req.user.name,
-                role: req.user.role,
+                accessLevelName: req.user.accessLevelName,
             } : undefined,
             timestamp: new Date().toISOString(),
         };
     }
     /**
-     * Moderator or Admin endpoint - Requires valid JWT token with moderator or admin role
-     * Send token in Authorization header: "Bearer <your-token>"
-     * User must have role: "moderator" or "admin"
+     * Moderator or Admin endpoint - Requires moderator or admin access level
+     * Send token via X-Token header
      */
     async moderatorEndpoint(req) {
         this.setStatus(200);
@@ -80,7 +78,7 @@ let TestController = class TestController extends tsoa_1.Controller {
                 id: req.user.id,
                 email: req.user.email,
                 name: req.user.name,
-                role: req.user.role,
+                accessLevelName: req.user.accessLevelName,
             } : undefined,
             timestamp: new Date().toISOString(),
         };
@@ -98,7 +96,7 @@ let TestController = class TestController extends tsoa_1.Controller {
                 userId: req.user.id,
                 email: req.user.email,
                 name: req.user.name,
-                role: req.user.role,
+                accessLevelName: req.user.accessLevelName,
                 issuedAt: req.user.iat,
                 expiresAt: req.user.exp,
                 issuer: "api-tor",
@@ -159,5 +157,5 @@ __decorate([
 ], TestController.prototype, "validateToken", null);
 exports.TestController = TestController = __decorate([
     (0, tsoa_1.Route)("test"),
-    (0, tsoa_1.Tags)("Test Endpoints")
+    (0, tsoa_1.Tags)("Dev - Test")
 ], TestController);

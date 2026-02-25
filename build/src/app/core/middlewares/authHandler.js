@@ -27,6 +27,12 @@ const authenticate = async (req, res, next) => {
             return;
         }
         const decoded = (0, jwtUtils_1.verifyAccessToken)(token);
+        if (decoded.jti && await (0, jwtUtils_1.isTokenBlacklisted)(decoded.jti)) {
+            res.status(401).json({
+                error: { message: "Token has been revoked", status: 401 },
+            });
+            return;
+        }
         req.user = decoded;
         next();
     }
@@ -67,7 +73,7 @@ const authorize = (...requiredLevelNames) => {
             }
             // Find the minimum level required from the scope names
             const requiredLevel = Math.min(...requiredLevelNames.map((n) => ACCESS_LEVELS[n] ?? 0));
-            const userLevel = req.user.accessLevel ?? ACCESS_LEVELS[req.user.role || ""] ?? 0;
+            const userLevel = req.user.accessLevel ?? 0;
             if (userLevel < requiredLevel) {
                 res.status(403).json({
                     error: {
@@ -117,7 +123,7 @@ exports.optionalAuth = optionalAuth;
  * level derived from the scope names. This means higher levels always pass
  * (master at 100 passes any admin check at 50).
  */
-function expressAuthentication(request, securityName, scopes) {
+async function expressAuthentication(request, securityName, scopes) {
     if (securityName === "jwt") {
         const token = (0, jwtUtils_1.extractTokenFromHeader)(request);
         if (!token) {
@@ -125,10 +131,13 @@ function expressAuthentication(request, securityName, scopes) {
         }
         try {
             const decoded = (0, jwtUtils_1.verifyAccessToken)(token);
+            if (decoded.jti && await (0, jwtUtils_1.isTokenBlacklisted)(decoded.jti)) {
+                return Promise.reject(new Error("Token has been revoked"));
+            }
             if (scopes && scopes.length > 0) {
                 // Find the minimum level required from the scope names
                 const requiredLevel = Math.min(...scopes.map((s) => ACCESS_LEVELS[s] ?? 0));
-                const userLevel = decoded.accessLevel ?? ACCESS_LEVELS[decoded.role || ""] ?? 0;
+                const userLevel = decoded.accessLevel ?? 0;
                 if (userLevel < requiredLevel) {
                     return Promise.reject(new Error(`Insufficient permissions. Required minimum level: ${requiredLevel}`));
                 }

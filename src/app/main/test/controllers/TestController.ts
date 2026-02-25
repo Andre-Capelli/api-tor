@@ -17,13 +17,13 @@ interface TestResponse {
     id: string;
     email: string;
     name: string;
-    role?: string;
+    accessLevelName?: string;
   };
   timestamp: string;
 }
 
 @Route("test")
-@Tags("Test Endpoints")
+@Tags("Dev - Test")
 export class TestController extends Controller {
   /**
    * Public endpoint - No authentication required
@@ -61,16 +61,15 @@ export class TestController extends Controller {
         id: req.user.id,
         email: req.user.email,
         name: req.user.name,
-        role: req.user.role,
+        accessLevelName: req.user.accessLevelName,
       } : undefined,
       timestamp: new Date().toISOString(),
     };
   }
 
   /**
-   * Admin only endpoint - Requires valid JWT token with admin role
-   * Send token in Authorization header: "Bearer <your-token>"
-   * User must have role: "admin"
+   * Admin only endpoint - Requires admin access level or higher
+   * Send token via X-Token header
    */
   @Security("jwt", ["admin"])
   @SuccessResponse("200", "Admin access granted")
@@ -88,16 +87,15 @@ export class TestController extends Controller {
         id: req.user.id,
         email: req.user.email,
         name: req.user.name,
-        role: req.user.role,
+        accessLevelName: req.user.accessLevelName,
       } : undefined,
       timestamp: new Date().toISOString(),
     };
   }
 
   /**
-   * Moderator or Admin endpoint - Requires valid JWT token with moderator or admin role
-   * Send token in Authorization header: "Bearer <your-token>"
-   * User must have role: "moderator" or "admin"
+   * Moderator or Admin endpoint - Requires moderator or admin access level
+   * Send token via X-Token header
    */
   @Security("jwt", ["moderator", "admin"])
   @SuccessResponse("200", "Moderator access granted")
@@ -115,7 +113,7 @@ export class TestController extends Controller {
         id: req.user.id,
         email: req.user.email,
         name: req.user.name,
-        role: req.user.role,
+        accessLevelName: req.user.accessLevelName,
       } : undefined,
       timestamp: new Date().toISOString(),
     };
@@ -138,7 +136,7 @@ export class TestController extends Controller {
       userId: string;
       email: string;
       name: string;
-      role?: string;
+      accessLevelName?: string;
       issuedAt?: number;
       expiresAt?: number;
       issuer?: string;
@@ -153,7 +151,7 @@ export class TestController extends Controller {
         userId: req.user!.id,
         email: req.user!.email,
         name: req.user!.name,
-        role: req.user!.role,
+        accessLevelName: req.user!.accessLevelName,
         issuedAt: req.user!.iat,
         expiresAt: req.user!.exp,
         issuer: "api-tor",

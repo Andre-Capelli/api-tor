@@ -12,8 +12,8 @@ class AccessLevelService {
     async getById(id) {
         return await AccessLevel_1.default.findById(id);
     }
-    async getByName(name) {
-        return await AccessLevel_1.default.findOne({ name });
+    async getByKey(key) {
+        return await AccessLevel_1.default.findOne({ key });
     }
     async getByLevel(level) {
         return await AccessLevel_1.default.findOne({ level });

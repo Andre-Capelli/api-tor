@@ -1,4 +1,5 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, Document } from "mongoose";
+import { modConnection } from "../../../app/configs/mongodb/config";
 import { ModificationSchema, IModification } from "../../../app/core";
 
 // Antivirus Information interface
@@ -64,6 +65,6 @@ AntivirusInformationSchema.add(ModificationSchema);
 // Compound index for efficient queries
 AntivirusInformationSchema.index({ machineId: 1, timestamp: -1 });
 
-const AntivirusInformationDB = model<IAntivirusInformationDB>("AntivirusInformation", AntivirusInformationSchema);
+const AntivirusInformationDB = modConnection.model<IAntivirusInformationDB>("AntivirusInformation", AntivirusInformationSchema);
 
 export default AntivirusInformationDB;

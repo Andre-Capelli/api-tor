@@ -182,6 +182,6 @@ __decorate([
 ], MachineController.prototype, "deleteMachine", null);
 exports.MachineController = MachineController = __decorate([
     (0, tsoa_1.Route)("machines"),
-    (0, tsoa_1.Tags)("Machine"),
+    (0, tsoa_1.Tags)("Machines"),
     (0, tsoa_1.Security)("jwt")
 ], MachineController);

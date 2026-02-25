@@ -223,6 +223,6 @@ __decorate([
 ], CpuInformationController.prototype, "deleteCpuInformationByMachineId", null);
 exports.CpuInformationController = CpuInformationController = __decorate([
     (0, tsoa_1.Route)("monitoring/cpu-information"),
-    (0, tsoa_1.Tags)("CPU Information"),
+    (0, tsoa_1.Tags)("Monitoring - CPU"),
     (0, tsoa_1.Security)("jwt")
 ], CpuInformationController);

@@ -16,7 +16,7 @@ import { AntivirusInformation, IAntivirusInformation } from "../models/Antivirus
 import { AntivirusInformationService } from "../services/AntivirusInformationService";
 
 @Route("monitoring/antivirus-information")
-@Tags("Antivirus Information")
+@Tags("Monitoring - Antivirus")
 @Security("jwt")
 export class AntivirusInformationController extends Controller {
   @SuccessResponse("200", "List")

@@ -238,6 +238,6 @@ __decorate([
 ], CustomFieldController.prototype, "deleteValue", null);
 exports.CustomFieldController = CustomFieldController = __decorate([
     (0, tsoa_1.Route)("custom-fields"),
-    (0, tsoa_1.Tags)("Custom Field"),
+    (0, tsoa_1.Tags)("Admin - Custom Fields"),
     (0, tsoa_1.Security)("jwt")
 ], CustomFieldController);

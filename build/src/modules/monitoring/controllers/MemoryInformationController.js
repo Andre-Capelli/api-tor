@@ -130,6 +130,6 @@ __decorate([
 ], MemoryInformationController.prototype, "deleteMemoryInformation", null);
 exports.MemoryInformationController = MemoryInformationController = __decorate([
     (0, tsoa_1.Route)("monitoring/memory-information"),
-    (0, tsoa_1.Tags)("Memory Information"),
+    (0, tsoa_1.Tags)("Monitoring - Memory"),
     (0, tsoa_1.Security)("jwt")
 ], MemoryInformationController);

@@ -171,6 +171,6 @@ __decorate([
 ], SubscriptionController.prototype, "validateSubscription", null);
 exports.SubscriptionController = SubscriptionController = __decorate([
     (0, tsoa_1.Route)("subscriptions"),
-    (0, tsoa_1.Tags)("Subscription"),
+    (0, tsoa_1.Tags)("Admin - Subscriptions"),
     (0, tsoa_1.Security)("jwt")
 ], SubscriptionController);

@@ -16,7 +16,7 @@ import { IAccessLevel, AccessLevel } from "../AccessLevel";
 import { AccessLevelService } from "../services/AccessLevelService";
 
 @Route("access-levels")
-@Tags("Access Level")
+@Tags("Admin - Access Levels")
 @Security("jwt", ["master"])
 export class AccessLevelController extends Controller {
   @SuccessResponse("200", "List")

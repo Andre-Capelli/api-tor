@@ -2,7 +2,8 @@ import { Schema, model, Document } from "mongoose";
 import { ModificationSchema, IModification } from "../../core";
 
 export interface AccessLevel {
-  name: string;
+  key: string;
+  name: Record<string, string>;
   level: number;
   scope: string;
   description?: string;
@@ -18,11 +19,16 @@ export interface IAccessLevelDB extends Document, AccessLevel, IModification {}
 
 const AccessLevelSchema = new Schema<IAccessLevelDB>(
   {
-    name: {
+    key: {
       type: String,
       required: true,
       unique: true,
       trim: true,
+      lowercase: true,
+    },
+    name: {
+      type: Schema.Types.Mixed,
+      required: true,
     },
     level: {
       type: Number,

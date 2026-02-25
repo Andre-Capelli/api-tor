@@ -16,7 +16,7 @@ import { StorageInformation, IStorageInformation } from "../models/StorageInform
 import { StorageInformationService } from "../services/StorageInformationService";
 
 @Route("monitoring/storage-information")
-@Tags("Storage Information")
+@Tags("Monitoring - Storage")
 @Security("jwt")
 export class StorageInformationController extends Controller {
   @SuccessResponse("200", "List")
